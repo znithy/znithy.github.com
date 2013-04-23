@@ -1,0 +1,497 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 3 | Never Doubting Me</title>
+  <meta name="author" content="znithy">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Never Doubting Me"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Never Doubting Me" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'></script>
+<!-- CDN upload request sent in private mail to generated-toc author -->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40380285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Never Doubting Me</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-19T01:36:21.000Z"><a href="/2010/02/19/how-to-display-recent-comments-in-habari/">Feb 19 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/19/how-to-display-recent-comments-in-habari/">Habari中显示&quot;最近评论&quot;</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Habari虽然有recentcomments和freshcomments这两个显示最近的评论的插件,但我试了下,运气差了些,没一个能用起来,所以只能自己动手了,看到miklb和我用一样的模板,他右边sidebar的Recent Comments做的真不错,和主题风格符合的好,就看着他网站的样子做了个.</p>
+<p>在Habari的wiki上可以查到显示最近评论的方法,这儿先简单引用下:</p>
+<p>1)在模板<code>theme.php</code>文件的<code>add_template_vars</code>这个函数中插入如下代码,修改&quot;25&quot;为你想显示的数目: </p>
+<pre><code class="lang-php">$this-&gt;assign(&#39;recent_comments&#39;,
+              Comments::get( array(&#39;limit&#39;=&gt;25, &#39;status&#39;=&gt;Comment::STATUS_APPROVED,
+                                   &#39;type&#39;=&gt;Comment::COMMENT, &#39;orderby&#39;=&gt;&#39;date DESC&#39; ) ) );</code></pre>
+<p>2)在需要显示的地方(比如侧边栏<code>sidebar.php</code>)插入:</p>
+<pre><code class="lang-php">&lt;h3&gt;Recent Comments&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;?php foreach($recent_comments as $comment): ?&gt;
+    &lt;li&gt;
+      &lt;a href=&quot;&lt;?php echo $comment-&gt;url ?&gt;&quot;&gt;
+        &lt;?php echo $comment-&gt;name; ?&gt;
+      &lt;/a&gt; on
+      &lt;a href=&quot;&lt;?php echo $comment-&gt;post-&gt;permalink; ?&gt;&quot;&gt;
+        &lt;?php echo $comment-&gt;post-&gt;title; ?&gt;
+      &lt;/a&gt;
+    &lt;/li&gt;
+  &lt;?php endforeach; ?&gt;
+&lt;/ul&gt;</code></pre>
+<p>这样就能实现最近评论功能了.</p>
+<p>接着我写下现在使用的这个模板的&quot;最近评论&quot;代码,稍微美化了下,引入了Gravatar头像和RSS链接.</p>
+<p><code>theme.php</code>插入相同的代码,接着在CSS中加两段:</p>
+<pre><code class="lang-css">div#recentcomments ul{
+        text-align:justify;
+        padding-bottom: 7px;
+        margin-bottom:7px;
+        border-bottom: #eaeaea 1px solid;
+    min-height: 25px;
+}
+div#recentcomments div.gravatar_mini
+{
+    float:left;
+        margin-right:5px;
+}</code></pre>
+<p>接着在<code>sidebar.php</code>中加入这么一段:</p>
+<pre><code class="lang-php">&lt;div id=&quot;recentcomments&quot;&gt;
+&lt;h3&gt;&lt;a href=&quot;http://never.doubting.me/atom/comments&quot; title=&quot;Comments Feed&quot;&gt;&lt;img alt=&quot;comments Feed&quot;
+src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/images/feed.png&quot; /&gt;&lt;/a&gt;&amp;nbsp;Recent Comments&lt;/h3&gt;
+    &lt;?php foreach($recent_comments as $comment): ?&gt;
+
+   &lt;ul&gt;
+       &lt;div class=&quot;gravatar_mini&quot;&gt;      
+        &lt;img alt=&quot;Gravatars Icon&quot; src = &quot;&lt;?php echo 
+        &quot;http://www.gravatar.com/avatar/&quot;.md5( $comment-&gt;email ).&quot;?s=25&quot; ?&gt;&quot;&gt;
+       &lt;/div&gt;
+   &lt;div&gt;
+   &lt;a href=&quot;&lt;?php echo $comment-&gt;url ?&gt;&quot;&gt;
+   &lt;?php echo $comment-&gt;name; ?&gt;&lt;/a&gt;
+   &lt;?php echo &quot; commented, &amp;quot;&quot;.$comment-&gt;content.&quot;&amp;quot;&quot;.&quot; on the post &quot;?&gt;
+   &lt;a href=&quot;&lt;?php echo $comment-&gt;post-&gt;permalink; ?&gt;&quot;&gt;
+   &lt;?php echo $comment-&gt;post-&gt;title.&quot;.&quot;; ?&gt;&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/ul&gt;                                  
+&lt;?php endforeach; ?&gt;
+&lt;/div&gt;</code></pre>
+<p>完成了 :)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/19/how-to-display-recent-comments-in-habari/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-19T01:33:23.000Z"><a href="/2010/02/19/how-to-invoke-gravatat-portrait-in-habari-template/">Feb 19 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/19/how-to-invoke-gravatat-portrait-in-habari-template/">Habari模板中调用Gravatar头像</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>前面一篇讲了利用插件来调用Gravatar头像,但有时我们同一个网站需要不同大小的Gravatar头像,或是自定义Gravatar的默认头像,插件可能没这么多功能,所以我们来看看Gravatar网站提供的方法,可以实现全部功能.</p>
+<p>html中只要插入  <code>&lt;img alt=&quot;Gravatars Icon&quot; src = &quot;Gravatar图像地址&quot;&gt;</code> 就能实验调用,Gravatar图像地址可以带参数来实现不同功能.</p>
+<p>举例说明图像地址,最简单的形式是:</p>
+<p><code>http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802</code></p>
+<p>其中后面的一串数字是Email地址的MD5码,MD5码的转换各平台不同,一般为md5(Email地址).</p>
+<p>参数共3个,图像大小,默认图像和图像分级.举例:</p>
+<p><code>http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802?d=identicon&amp;s=80&amp;r=g</code></p>
+<p>可以看到参数都加在?号后,之间用&amp;连接.</p>
+<p>1) d代表默认头像(给那些没设置Gravatar的用),Gravatar网站提供了 &quot;identicon&quot; &quot;monsterid&quot; and &quot;wavatar&quot; 这三种,也可以输入自定义的图像地址.</p>
+<p>2) s代表图像大小,后面=80就是长宽都是80px.</p>
+<p>3)r是分级,后面的值共有g, pg, r, x这4种,越往后限制级越高(暴力,情色图片),默认是g.</p>
+<p>这句是我Habari中的调用语句,可以作为参考:</p>
+<pre><code class="lang-html">&lt;img alt=&quot;Gravatars Icon&quot; src = &quot;&lt;?php echo &quot;http://www.gravatar.com/avatar/&quot;.md5( $comment-&gt;email ).&quot;?s=25&quot; ?&gt;&quot;&gt;</code></pre>
+<p>更详细的内容请看<a href="http://en.gravatar.com/site/implement">官方网站</a>.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/19/how-to-invoke-gravatat-portrait-in-habari-template/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-18T01:27:19.000Z"><a href="/2010/02/18/display-gravatar-portrait-in-habari/">Feb 18 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/18/display-gravatar-portrait-in-habari/">Habari的Gravatar头像插件</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://www.gravatar.com/">Gravatar</a>是一个提供通用头像的网站,你在Gravatar上传设置头像并且关联到Email地址后,以后支持Gravatar的网站留言,只要输入Email地址,就会自动显示头像.wordpress默认就支持Gravatar,Habari需要通过插件来使用这项功能.</p>
+<p>此插件由Andrew da Silva所写,在<a href="http://www.habariproject.org/dist/plugins/gravatar/">此处</a>下载对应你Habari版本的压缩包.</p>
+<p>关于怎样安装插件,请看<a href="http://reject.doubting.me/install-habari-theme-and-plugin-guide">此文</a>.</p>
+<p>安装后需要修改模板来实现功能,在需要显示Gravatar头像的地方加上:</p>
+<pre><code class="lang-html">&lt;img src=&quot;&lt;? echo $comment-&gt;gravatar ?&gt;&quot;&gt;</code></pre>
+<h3>举例:</h3>
+<p>先在css文件中加入这么段:</p>
+<pre><code class="lang-css">div#entry-comments div.gravatar
+{
+    float:right;
+    margin-left:10px;
+    margin-right:10px;
+}</code></pre>
+<p>接着在comments.php中找到正确的位置(各个模板不同),加入:</p>
+<pre><code class="lang-html">&lt;div class=&quot;gravatar&quot;&gt;
+
+&lt;img src=&quot;&lt;? echo $comment-&gt;gravatar ?&gt;&quot;&gt;
+
+&lt;/div&gt;</code></pre>
+<p>这样就完成了,当然你也可以直接在<code>comments.php</code>中加入那句话.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/18/display-gravatar-portrait-in-habari/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-18T01:22:07.000Z"><a href="/2010/02/18/using-jquery-to-display-images-in-habari/">Feb 18 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/18/using-jquery-to-display-images-in-habari/">Habari中使用jQuery来预览图片</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>wordpress中使用jQuery来预览图片的插件很多,特别是lightbox,相信很多人都用过.</p>
+<p>这儿介绍下怎样在Habari中使用这项功能.这儿以ThickBox和ShadowBox这两个通用插件为例.并且只实现最简单的图片预览功能.</p>
+<h2>ThickBox</h2>
+<p>1)下载ThickBox,<a href="http://jquery.com/demo/thickbox/">点击进入官网</a>.我们这主要使用(<code>thickbox-compressed.js</code> , <code>thickbox.css</code> ,<code>jQuery.js</code>)这三个文件.</p>
+<p>2)在网页模板的目录下建立<code>thickbox</code>文件夹,上传这三个文件和附带一些图片文件进此文件夹.</p>
+<p>3)修改模板的文件<code>header.php</code>,一般此文件头部<code>&lt;head&gt;</code>和<code>&lt;/head&gt;</code>间都会有<code>&lt;link rel=&quot;stylesheet&quot; ...&gt;</code> 这样的代码,我们要加入的代码和这类似,所以也写在这地方,内容是:</p>
+<pre><code class="lang-html">&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/jquery.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/thickbox-compressed.js&quot;&gt;&lt;/script&gt;
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/thickbox.css&quot; type=&quot;text/css&quot; media=&quot;screen&quot; /&gt;</code></pre>
+<p>4)完成工作了,以后只要在图片的链接代码里加上<code>class=&quot;thickbox&quot;</code>就可以了.比如:</p>
+<pre><code class="lang-html">&lt;a title=&quot;图片的标题&quot; class=&quot;thickbox&quot; href=&quot;链接的图片地址&quot; &gt;&lt; img src=&quot;显示的图片地址&quot; /&gt;&lt;/a&gt;</code></pre>
+<h2>Shadow Box</h2>
+<p>ShadowBox与ThickBox类似</p>
+<p>1)下载shadowbox,<a href="http://www.shadowbox-js.com/index.html">点击进入官网</a>.我们这主要使用(<code>shadowbox.css</code> , <code>shadowbox.js</code>)两个文件.</p>
+<p>2)在网页模板的目录下建立<code>shadowbox</code>文件夹,上传这两个文件和附带一些图片文件进此文件夹.</p>
+<p>3)修改模板的文件<code>header.php</code>,一般此文件头部<code>&lt;head&gt;</code>和<code>&lt;/head&gt;</code>间都会有<code>&lt;link rel=&quot;stylesheet&quot; ...&gt;</code>这样的代码,我们要加入的代码和这类似,所以也写在这地方,内容是:</p>
+<pre><code class="lang-html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/shadowbox/shadowbox.css&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/shadowbox/shadowbox.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+Shadowbox.init();
+
+&lt;/script&gt;</code></pre>
+<p>4)完成工作了,以后只要在图片的链接代码里加上<code>rel=&quot;shadowbox&quot;</code>就可以了.比如:</p>
+<pre><code class="lang-html">&lt;a title=&quot;图片的标题&quot; rel=&quot;shadowbox&quot; href=&quot;链接的图片地址&quot; &gt;&lt; img src=&quot;显示的图片地址&quot; /&gt;&lt;/a&gt;</code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/18/using-jquery-to-display-images-in-habari/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-18T01:16:09.000Z"><a href="/2010/02/18/plugins-and-themes-of-habari/">Feb 18 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/18/plugins-and-themes-of-habari/">Habari的插件和主题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2>怎样安装主题和插件</h2>
+<p>Habari的主题和插件安装在两个地方,系统自带的在<code>system</code>目录下的<code>plugins</code>和<code>themes</code>.用户安装的在<code>user</code>目录下的<code>plugins</code>和<code>themes</code>文件夹.</p>
+<p>一般只要把想要安装的插件或主题上传到<code>user</code>中对应的文件夹后再进后台选择使用就可.</p>
+<h2>在哪儿下载插件和主题:</h2>
+<h4>Habari维基上资源,有下载链接,并且有简介,但不全:</h4>
+<blockquote>
+<p><strong>主题</strong>: <a href="http://wiki.habariproject.org/en/Available_Themes">http://wiki.habariproject.org/en/Available_Themes</a></p>
+<p><strong>插件</strong>: <a href="http://wiki.habariproject.org/en/Available_Plugins">http://wiki.habariproject.org/en/Available_Plugins</a></p>
+</blockquote>
+<h4>SVN上的资源,为最新版本:</h4>
+<p>可以通过在命令行中输入&quot;svn co 链接地址&quot;下载.</p>
+<blockquote>
+<p><strong>主题</strong>: <a href="http://svn.habariproject.org/habari-extras/themes/">http://svn.habariproject.org/habari-extras/themes/</a></p>
+<p><strong>插件</strong>: <a href="http://svn.habariproject.org/habari-extras/plugins/">http://svn.habariproject.org/habari-extras/plugins/</a></p>
+</blockquote>
+<h4>压缩包下载:</h4>
+<blockquote>
+<p><strong>主题</strong>: <a href="http://habariproject.org/dist/themes/">http://habariproject.org/dist/themes/</a></p>
+<p><strong>插件</strong>: <a href="http://habariproject.org/dist/plugins/">http://habariproject.org/dist/plugins/</a></p>
+</blockquote>
+<h2>遇到问题去哪儿问:</h2>
+<p>官方的解答问题平台,建议先搜索: <a href="https://trac.habariproject.org/habari">https://trac.habariproject.org/habari</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/18/plugins-and-themes-of-habari/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/2/" class="alignleft prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:never.doubting.me">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/apache/">Apache</a><small>1</small></li>
+  
+    <li><a href="/tags/ispconfig/">ISPconfig</a><small>1</small></li>
+  
+    <li><a href="/tags/linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
+  
+    <li><a href="/tags/php/">PHP</a><small>1</small></li>
+  
+    <li><a href="/tags/pt/">PT</a><small>1</small></li>
+  
+    <li><a href="/tags/vps/">VPS</a><small>3</small></li>
+  
+    <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/github/">github</a><small>3</small></li>
+  
+    <li><a href="/tags/google/">google</a><small>1</small></li>
+  
+    <li><a href="/tags/habari/">habari</a><small>5</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/octopress/">octopress</a><small>3</small></li>
+  
+    <li><a href="/tags/ruby/">ruby</a><small>1</small></li>
+  
+    <li><a href="/tags/tex/">tex</a><small>1</small></li>
+  
+    <li><a href="/tags/transmission/">transmission</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'neverdoubtingme';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

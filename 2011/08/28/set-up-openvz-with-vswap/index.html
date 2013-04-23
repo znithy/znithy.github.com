@@ -1,0 +1,415 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>架建最新带VSwap的OpenVZ服务器 | Never Doubting Me</title>
+  <meta name="author" content="znithy">
+  
+  <meta name="description" content="因为是新技术，就想测试下，按照PETER NILSSONS的文章和openvz wiki的资料试了下，暂时没遇到问题。
+这儿记录下安装过程，有兴趣的朋友也可玩下，安装没几步，很容易。
+先介绍下VSwap
+RHEL6(Redhat6, CentOS6, Fedora 12/13/14)系列系统新支持的内存管理技术，替代了原来的User beancounters。
+现在分成了physpages（最大内存）和swappages（最大swap）这两个参数，当最大内存达到后，内存就移入VSwap（替代了原来的burstRAM）,
+这个VSwap是内存模拟的swap，和普通的swap相比没有硬盘I/O操作，所以比XEN的Swap要快，但模拟swap本身这个过程会使机器变慢。
+当母鸡内存短缺后，VSwap会被移入真实的硬盘swap中。
+安装步骤
+注意到，这是RHEL6带的技术，所以母鸡不能是常用的CentOS 5，我以CentOS6.0为例:
+1）设置yum源
+cd /etc/yum.repos.d
+wget http://download.openvz.org/openvz.repo
+wget http://download.openvz.org/RPM-GPG-Key-OpenVZ
+rpm --import RPM-GPG-Key-OpenVZ
+2）修改 /etc/yum.repos.d/openvz.repo文件，这文件默认支持rhel5，我们把他改成支持rhel6.
+vi /etc/yum.repos.d/openvz.repo
+修改[openvz-kernel-rhel5]下的 enabled = 0, [openvz-kernel-rhel6]下的 enabled = 1
+
+改好后
+yum update
+3）安装openvz
+yum install vzkernel
+4）修改 /etc/sysctl.conf文件
+vi /etc/sysctl.conf
+改成如下：
+# Kernel sysctl configuration file for Red Hat Linux    
+#
+# For binary values, 0 is disabled, 1 is enabled.  See sysctl(8) and
+# sysctl.conf(5) for more details.
+
+# Controls IP packet forwarding
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+
+#disable arp proxy
+net.ipv4.conf.default.proxy_arp = 0
+
+
+# Controls source route verification
+net.ipv4.conf.default.rp_filter = 1
+
+# Do not accept source routing
+net.ipv4.conf.default.accept_source_route = 0
+
+# Controls the System Request debugging functionality of the kernel
+kernel.sysrq = 1
+
+# Controls whether core dumps will append the PID to the core filename.
+# Useful for debugging multi-threaded applications.
+kernel.core_uses_pid = 1
+
+# Controls the use of TCP syncookies
+net.ipv4.tcp_syncookies = 1
+
+# Disable netfilter on bridges.
+net.bridge.bridge-nf-call-ip6tables = 0
+net.bridge.bridge-nf-call-iptables = 0
+net.bridge.bridge-nf-call-arptables = 0
+
+
+# We do not want all our interfaces to send redirects
+net.ipv4.conf.default.send_redirects = 1
+net.ipv4.conf.all.send_redirects = 0
+应用设置：
+sysctl -p
+5）禁用SELINUX
+vi /etc/sysconfig/selinux
+改参数：SELINUX=disabled
+6）重启主机：
+reboot
+7）安装OpenVZ管理面板
+wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh
+
+管理面板位于：http://你的ip:3000  
+默认用户名/密码：admin/admin    
+
+8）建立小鸡
+进入网页管理界面后大部分操作都在Physical Servers里进行。
+新建服务器，OS Templates里下载模板（点选下载会会自动后台下载，过一会而就好了），
+Server Templates里修改VPS方案，Create virtual Server建立VPS。
+这个就是建立VPS的界面，需要添ID，选择方案什么的，看看就知道了
+
+9）SHELL下简单命令介绍（101是小鸡的ID
+
+进入小鸡: vzctl enter 101退出小鸡：exit小鸡HOSTNAME: vzctl set 101 --hostname HOSTNAME --save小鸡IP: vzctl set 101 --ipadd YourIP --save小鸡DNS: vzctl set 101 --nameserver DNSIP --save小鸡用户名/密码: vzctl set 101 --userpasswd USERNAME:PASSWORD设置随母鸡自动开机: vzctl set 101 --onboot yes --save开/关/重启小鸡: vzctl start/stop/restart 101删除小鸡: vzctl destroy 101    
+更多的命令请看openvz wiki或自行google。    
+
+最后这张是小鸡free -m的图，可以看到有了2G的SWAP区：">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="架建最新带VSwap的OpenVZ服务器"/>
+  <meta property="og:site_name" content="Never Doubting Me"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Never Doubting Me" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'></script>
+<!-- CDN upload request sent in private mail to generated-toc author -->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40380285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Never Doubting Me</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-08-27T22:29:56.000Z"><a href="/2011/08/28/set-up-openvz-with-vswap/">Aug 28 2011</a></time>
+      
+      
+  
+    <h1 class="title">架建最新带VSwap的OpenVZ服务器</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>因为是新技术，就想测试下，按照PETER NILSSONS的文章和openvz wiki的资料试了下，暂时没遇到问题。
+这儿记录下安装过程，有兴趣的朋友也可玩下，安装没几步，很容易。</p>
+<h2>先介绍下VSwap</h2>
+<p>RHEL6(Redhat6, CentOS6, Fedora 12/13/14)系列系统新支持的内存管理技术，替代了原来的User beancounters。</p>
+<p>现在分成了physpages（最大内存）和swappages（最大swap）这两个参数，当最大内存达到后，内存就移入VSwap（替代了原来的burstRAM）,
+这个VSwap是内存模拟的swap，和普通的swap相比没有硬盘I/O操作，所以比XEN的Swap要快，但模拟swap本身这个过程会使机器变慢。
+当母鸡内存短缺后，VSwap会被移入真实的硬盘swap中。</p>
+<h2>安装步骤</h2>
+<p>注意到，这是RHEL6带的技术，所以母鸡不能是常用的CentOS 5，我以CentOS6.0为例:</p>
+<h3>1）设置yum源</h3>
+<pre><code class="lang-bash">cd /etc/yum.repos.d
+wget http://download.openvz.org/openvz.repo
+wget http://download.openvz.org/RPM-GPG-Key-OpenVZ
+rpm --import RPM-GPG-Key-OpenVZ</code></pre>
+<h3>2）修改 /etc/yum.repos.d/openvz.repo文件，这文件默认支持rhel5，我们把他改成支持rhel6.</h3>
+<pre><code class="lang-bash">vi /etc/yum.repos.d/openvz.repo</code></pre>
+<p>修改<code>[openvz-kernel-rhel5]</code>下的 <code>enabled = 0</code>, <code>[openvz-kernel-rhel6]</code>下的 <code>enabled = 1</code></p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz01.png" alt="openvz.repo setting"></p>
+<p>改好后</p>
+<pre><code class="lang-bash">yum update</code></pre>
+<h3>3）安装openvz</h3>
+<pre><code class="lang-bash">yum install vzkernel</code></pre>
+<h3>4）修改 /etc/sysctl.conf文件</h3>
+<pre><code class="lang-bash">vi /etc/sysctl.conf</code></pre>
+<p>改成如下：</p>
+<pre><code># Kernel sysctl configuration file for Red Hat Linux    
+#
+# For binary values, 0 is disabled, 1 is enabled.  See sysctl(8) and
+# sysctl.conf(5) for more details.
+
+# Controls IP packet forwarding
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+
+#disable arp proxy
+net.ipv4.conf.default.proxy_arp = 0
+
+
+# Controls source route verification
+net.ipv4.conf.default.rp_filter = 1
+
+# Do not accept source routing
+net.ipv4.conf.default.accept_source_route = 0
+
+# Controls the System Request debugging functionality of the kernel
+kernel.sysrq = 1
+
+# Controls whether core dumps will append the PID to the core filename.
+# Useful for debugging multi-threaded applications.
+kernel.core_uses_pid = 1
+
+# Controls the use of TCP syncookies
+net.ipv4.tcp_syncookies = 1
+
+# Disable netfilter on bridges.
+net.bridge.bridge-nf-call-ip6tables = 0
+net.bridge.bridge-nf-call-iptables = 0
+net.bridge.bridge-nf-call-arptables = 0
+
+
+# We do not want all our interfaces to send redirects
+net.ipv4.conf.default.send_redirects = 1
+net.ipv4.conf.all.send_redirects = 0</code></pre>
+<p>应用设置：</p>
+<pre><code class="lang-bash">sysctl -p</code></pre>
+<h3>5）禁用SELINUX</h3>
+<pre><code>vi /etc/sysconfig/selinux</code></pre>
+<p>改参数：<code>SELINUX=disabled</code></p>
+<h3>6）重启主机：</h3>
+<pre><code>reboot</code></pre>
+<h3>7）安装OpenVZ管理面板</h3>
+<pre><code class="lang-bash">wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh</code></pre>
+<blockquote>
+<p>管理面板位于：<br><a href="http://你的ip:3000">http://你的ip:3000</a>  </p>
+<p>默认用户名/密码：<br>admin/admin    </p>
+</blockquote>
+<h3>8）建立小鸡</h3>
+<p>进入网页管理界面后大部分操作都在Physical Servers里进行。
+新建服务器，OS Templates里下载模板（点选下载会会自动后台下载，过一会而就好了），
+Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
+<p>这个就是建立VPS的界面，需要添ID，选择方案什么的，看看就知道了</p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz02.png" alt="OpenVZ Panel"></p>
+<h3>9）SHELL下简单命令介绍（101是小鸡的ID</h3>
+<blockquote>
+<p>进入小鸡: vzctl enter 101<br>退出小鸡：exit<br>小鸡HOSTNAME: vzctl set 101 --hostname HOSTNAME --save<br>小鸡IP: vzctl set 101 --ipadd YourIP --save<br>小鸡DNS: vzctl set 101 --nameserver DNSIP --save<br>小鸡用户名/密码: vzctl set 101 --userpasswd USERNAME:PASSWORD<br>设置随母鸡自动开机: vzctl set 101 --onboot yes --save<br>开/关/重启小鸡: vzctl start/stop/restart 101<br>删除小鸡: vzctl destroy 101    </p>
+<p>更多的命令请看<a href="http://openvz.org/Main_Page">openvz wiki</a>或自行google。    </p>
+</blockquote>
+<p><em>最后这张是小鸡free -m的图，可以看到有了2G的SWAP区：</em></p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz03.png" alt="openvz example"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/vps/">VPS</a>, <a href="/tags/openvz/">OpenVZ</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:never.doubting.me">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/apache/">Apache</a><small>1</small></li>
+  
+    <li><a href="/tags/ispconfig/">ISPconfig</a><small>1</small></li>
+  
+    <li><a href="/tags/linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
+  
+    <li><a href="/tags/php/">PHP</a><small>1</small></li>
+  
+    <li><a href="/tags/pt/">PT</a><small>1</small></li>
+  
+    <li><a href="/tags/vps/">VPS</a><small>3</small></li>
+  
+    <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/github/">github</a><small>3</small></li>
+  
+    <li><a href="/tags/google/">google</a><small>1</small></li>
+  
+    <li><a href="/tags/habari/">habari</a><small>5</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/octopress/">octopress</a><small>3</small></li>
+  
+    <li><a href="/tags/ruby/">ruby</a><small>1</small></li>
+  
+    <li><a href="/tags/tex/">tex</a><small>1</small></li>
+  
+    <li><a href="/tags/transmission/">transmission</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'neverdoubtingme';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

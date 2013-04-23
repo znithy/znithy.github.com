@@ -1,0 +1,564 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | Never Doubting Me</title>
+  <meta name="author" content="znithy">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Never Doubting Me"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Never Doubting Me" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'></script>
+<!-- CDN upload request sent in private mail to generated-toc author -->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40380285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Never Doubting Me</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-03-15T19:17:03.000Z"><a href="/2013/03/15/transmission-install-script-2.77/">Mar 15 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/03/15/transmission-install-script-2.77/">transmission一键安装包</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://never.doubting.me/fancybox/image/transmission_2.77.png" alt="transmission web client"></p>
+<p>这篇文章讲怎样在自己的服务器或者VPS上安装Transmission网页版客户端.</p>
+<p>Transmission用于PT非常流行,以下脚本安装2.77版.</p>
+<h2>使用方法 (CentOS):</h2>
+<pre><code class="lang-bash">wget http://znithy.com/download/pthostloc_2.77.sh
+sh ./pthostloc_2.77.sh</code></pre>
+<blockquote>
+<p>默认登录地址:<code>http://ip:1911</code><br>默认用户名:<code>hostloc</code><br>默认密码:<code>znithy@hostloc.com</code><br>下载文件位置:<code>/home/transmission/Downloads/</code>        </p>
+</blockquote>
+<p><strong>请安装后修改用户名(rpc-username),密码(rpc-password),端口(rpc-port):</strong></p>
+<p>这些设置都在<code>/home/transmission/.config/transmission/settings.json</code>文件,
+修改前停止服务: </p>
+<pre><code class="lang-bash">service transmissiond stop</code></pre>
+<p>修改后重启服务: </p>
+<pre><code class="lang-bash">service transmissiond start</code></pre>
+<p>注意这脚本是给CentOS用的.</p>
+<p>对于Ubuntu,可以尝试把脚本里的<code>yum</code>改成<code>apt-get</code>.主要的几个组件都是编译安装的,应该没问题.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/03/15/transmission-install-script-2.77/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-09-19T23:32:49.000Z"><a href="/2011/09/20/get-your-free-whmcs/">Sep 20 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/09/20/get-your-free-whmcs/">免费获得正版WHMCS</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>WHMCS给hostgator和hostdime的用户提供免费正版授权.</p>
+<p>只有你有hostgator或者hostdime的IP的空间就可以免费用whmcs,如果你手里有这两家的空间那正巧,没有的话淘宝随便几块钱一个月的找家分销的.有了空间后按如下步骤操作.</p>
+<p>1) 解析你的域名到hostgator或者hostdime的空间的IP，</p>
+<p>2) 然后分别去对应的页面验证下就行了,会得到个授权许可.</p>
+<blockquote>
+<p><a href="http://www.whmcs.com/hostdime/">http://www.whmcs.com/hostdime/</a><br><a href="http://www.whmcs.com/hostgator/">http://www.whmcs.com/hostgator/</a></p>
+</blockquote>
+<p>3) 安装whmcs时需要填这个授权许可码</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/09/20/get-your-free-whmcs/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-08-27T22:29:56.000Z"><a href="/2011/08/28/set-up-openvz-with-vswap/">Aug 28 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/08/28/set-up-openvz-with-vswap/">架建最新带VSwap的OpenVZ服务器</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>因为是新技术，就想测试下，按照PETER NILSSONS的文章和openvz wiki的资料试了下，暂时没遇到问题。
+这儿记录下安装过程，有兴趣的朋友也可玩下，安装没几步，很容易。</p>
+<h2>先介绍下VSwap</h2>
+<p>RHEL6(Redhat6, CentOS6, Fedora 12/13/14)系列系统新支持的内存管理技术，替代了原来的User beancounters。</p>
+<p>现在分成了physpages（最大内存）和swappages（最大swap）这两个参数，当最大内存达到后，内存就移入VSwap（替代了原来的burstRAM）,
+这个VSwap是内存模拟的swap，和普通的swap相比没有硬盘I/O操作，所以比XEN的Swap要快，但模拟swap本身这个过程会使机器变慢。
+当母鸡内存短缺后，VSwap会被移入真实的硬盘swap中。</p>
+<h2>安装步骤</h2>
+<p>注意到，这是RHEL6带的技术，所以母鸡不能是常用的CentOS 5，我以CentOS6.0为例:</p>
+<h3>1）设置yum源</h3>
+<pre><code class="lang-bash">cd /etc/yum.repos.d
+wget http://download.openvz.org/openvz.repo
+wget http://download.openvz.org/RPM-GPG-Key-OpenVZ
+rpm --import RPM-GPG-Key-OpenVZ</code></pre>
+<h3>2）修改 /etc/yum.repos.d/openvz.repo文件，这文件默认支持rhel5，我们把他改成支持rhel6.</h3>
+<pre><code class="lang-bash">vi /etc/yum.repos.d/openvz.repo</code></pre>
+<p>修改<code>[openvz-kernel-rhel5]</code>下的 <code>enabled = 0</code>, <code>[openvz-kernel-rhel6]</code>下的 <code>enabled = 1</code></p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz01.png" alt="openvz.repo setting"></p>
+<p>改好后</p>
+<pre><code class="lang-bash">yum update</code></pre>
+<h3>3）安装openvz</h3>
+<pre><code class="lang-bash">yum install vzkernel</code></pre>
+<h3>4）修改 /etc/sysctl.conf文件</h3>
+<pre><code class="lang-bash">vi /etc/sysctl.conf</code></pre>
+<p>改成如下：</p>
+<pre><code># Kernel sysctl configuration file for Red Hat Linux    
+#
+# For binary values, 0 is disabled, 1 is enabled.  See sysctl(8) and
+# sysctl.conf(5) for more details.
+
+# Controls IP packet forwarding
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+
+#disable arp proxy
+net.ipv4.conf.default.proxy_arp = 0
+
+
+# Controls source route verification
+net.ipv4.conf.default.rp_filter = 1
+
+# Do not accept source routing
+net.ipv4.conf.default.accept_source_route = 0
+
+# Controls the System Request debugging functionality of the kernel
+kernel.sysrq = 1
+
+# Controls whether core dumps will append the PID to the core filename.
+# Useful for debugging multi-threaded applications.
+kernel.core_uses_pid = 1
+
+# Controls the use of TCP syncookies
+net.ipv4.tcp_syncookies = 1
+
+# Disable netfilter on bridges.
+net.bridge.bridge-nf-call-ip6tables = 0
+net.bridge.bridge-nf-call-iptables = 0
+net.bridge.bridge-nf-call-arptables = 0
+
+
+# We do not want all our interfaces to send redirects
+net.ipv4.conf.default.send_redirects = 1
+net.ipv4.conf.all.send_redirects = 0</code></pre>
+<p>应用设置：</p>
+<pre><code class="lang-bash">sysctl -p</code></pre>
+<h3>5）禁用SELINUX</h3>
+<pre><code>vi /etc/sysconfig/selinux</code></pre>
+<p>改参数：<code>SELINUX=disabled</code></p>
+<h3>6）重启主机：</h3>
+<pre><code>reboot</code></pre>
+<h3>7）安装OpenVZ管理面板</h3>
+<pre><code class="lang-bash">wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh</code></pre>
+<blockquote>
+<p>管理面板位于：<br><a href="http://你的ip:3000">http://你的ip:3000</a>  </p>
+<p>默认用户名/密码：<br>admin/admin    </p>
+</blockquote>
+<h3>8）建立小鸡</h3>
+<p>进入网页管理界面后大部分操作都在Physical Servers里进行。
+新建服务器，OS Templates里下载模板（点选下载会会自动后台下载，过一会而就好了），
+Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
+<p>这个就是建立VPS的界面，需要添ID，选择方案什么的，看看就知道了</p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz02.png" alt="OpenVZ Panel"></p>
+<h3>9）SHELL下简单命令介绍（101是小鸡的ID</h3>
+<blockquote>
+<p>进入小鸡: vzctl enter 101<br>退出小鸡：exit<br>小鸡HOSTNAME: vzctl set 101 --hostname HOSTNAME --save<br>小鸡IP: vzctl set 101 --ipadd YourIP --save<br>小鸡DNS: vzctl set 101 --nameserver DNSIP --save<br>小鸡用户名/密码: vzctl set 101 --userpasswd USERNAME:PASSWORD<br>设置随母鸡自动开机: vzctl set 101 --onboot yes --save<br>开/关/重启小鸡: vzctl start/stop/restart 101<br>删除小鸡: vzctl destroy 101    </p>
+<p>更多的命令请看<a href="http://openvz.org/Main_Page">openvz wiki</a>或自行google。    </p>
+</blockquote>
+<p><em>最后这张是小鸡free -m的图，可以看到有了2G的SWAP区：</em></p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz03.png" alt="openvz example"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/08/28/set-up-openvz-with-vswap/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-07-18T20:40:35.000Z"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">Jul 18 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">LAMP+ISPconfig控制面板的一键安装包-LAMPI</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://never.doubting.me/fancybox/image/LAMPI.PNG" alt="LAMPI Control Panel"></p>
+<p>ISPconfig这个面板一直在保持更新，界面也简洁。但安装过程比较繁琐，因此我在borgo07年写的lamp半自动安装脚本基础上做了修改. 更新了软件，自动修改配置文件，汉化了安装界面，加入了ISPconfig面板，对dovecot的启动错误进行了修复。</p>
+<p><strong>这是CentOS版。</strong></p>
+<h2>包含的软件</h2>
+<blockquote>
+<p>BIND9 (chrooted)<br>Apache with SSL support<br>PHP<br>Python<br>MySQL<br>proftpd<br>postfix<br>dovecot<br>Webalizer<br>ISPconfig    </p>
+</blockquote>
+<h2>安装方法</h2>
+<p>1)首先请设置你的ssh软件支持UTF8编码，要不然可能会出现乱码。</p>
+<p>2)下载一键安装脚本:</p>
+<pre><code class="lang-bash">wget http://znithy.com/download/lampi.sh</code></pre>
+<p>用文本编辑器打开lampi.sh，自定义mySQL密码和其他一些参数。
+(在文件头部，打开后一下就能看到了，当然你也可以不修改，采取默认设置。)</p>
+<p>3)上传lampi.sh和proftpd文件。</p>
+<p>4)修改权限并运行脚本</p>
+<pre><code class="lang-bash">  chmod 777 lampi.sh
+  ./lampi.sh</code></pre>
+<p>5)按中文提示操作即可。但在安装ISPconfig时提示是英文的，需要输入sql密码，你的地址，邮箱之类的信息。</p>
+<p>6)完成安装</p>
+<blockquote>
+<p>默认mySQL用户名root,密码123456</p>
+<p>面板地址:<br><a href="http://ip:8080">http://ip:8080</a><br>用户名admin，密码admin。    </p>
+</blockquote>
+<h2>官方演示地址</h2>
+<blockquote>
+<p><a href="http://demo3.ispconfig.org/">http://demo3.ispconfig.org/</a></p>
+<p>管理员面板<br>用户名: admin<br>密码: demo    </p>
+<p>Reseller面板<br>用户名: reseller<br>密码: demo    </p>
+<p>客户面板<br>用户名: client<br>密码: demo    </p>
+</blockquote>
+<h2>其他</h2>
+<p>没优化的情况下重启后的初始内存消耗略小于200MB，其中DNS和邮件服务占了85MB.</p>
+<p>中文语言包网上有，请google。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/07/18/lamp-ispconfig-install-script-lampi/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-07-06T22:52:12.000Z"><a href="/2011/07/07/optimize-tiny-vps-memory/">Jul 7 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/07/07/optimize-tiny-vps-memory/">小内存VPS优化</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>适用256MB内存以下的VPS.</p>
+<p>文件位置可以使用<code>find / -name filename</code>查找.</p>
+<h2>MySQL优化</h2>
+<p>编辑/etc/my.cnf (以下为全文件内容)</p>
+<pre><code>[mysqld]
+port      = 3306
+socket    = /tmp/mysql.sock
+key_buffer = 16K
+max_allowed_packet = 1M
+table_cache = 4
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 64K
+loose-skip-innodb
+skip-external-locking
+
+[mysqldump]
+quick
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+
+[isamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[myisamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[mysqlhotcopy]
+interactive-timeout</code></pre>
+<h2>nginx优化</h2>
+<p>编辑<code>nginx.conf</code></p>
+<pre><code>worker_processes 1; # 只使用1个进程
+worker_connections  1024; #减少连接数</code></pre>
+<p>把下面这行添加到 <code>/etc/security/limits.conf</code>,限制nginx用户组使用512k大小的堆栈:</p>
+<pre><code>nginx        hard    stack            512</code></pre>
+<h2>Apache优化</h2>
+<p>编辑<code>httpd-mpm.conf</code></p>
+<pre><code>&lt;IfModule mpm_prefork_module&gt;
+    StartServers           1
+    MinSpareServers       2
+    MaxSpareServers       2
+    MaxClients            3
+    MaxRequestsPerChild   50
+&lt;/IfModule&gt;</code></pre>
+<h2>PHP优化</h2>
+<p>编辑<code>php.ini</code></p>
+<pre><code>max_execution_time = 90     ; Maximum execution time of each script, in seconds
+max_input_time = 60     ; Maximum amount of time each script may spend parsing r
+equest data
+;max_input_nesting_level = 64 ; Maximum input variable nesting level
+memory_limit = 32M      ; Maximum amount of memory a script may consume (128MB)</code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/07/07/optimize-tiny-vps-memory/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/page/3/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:never.doubting.me">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/apache/">Apache</a><small>1</small></li>
+  
+    <li><a href="/tags/ispconfig/">ISPconfig</a><small>1</small></li>
+  
+    <li><a href="/tags/linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
+  
+    <li><a href="/tags/php/">PHP</a><small>1</small></li>
+  
+    <li><a href="/tags/pt/">PT</a><small>1</small></li>
+  
+    <li><a href="/tags/vps/">VPS</a><small>3</small></li>
+  
+    <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/github/">github</a><small>3</small></li>
+  
+    <li><a href="/tags/google/">google</a><small>1</small></li>
+  
+    <li><a href="/tags/habari/">habari</a><small>5</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/octopress/">octopress</a><small>3</small></li>
+  
+    <li><a href="/tags/ruby/">ruby</a><small>1</small></li>
+  
+    <li><a href="/tags/tex/">tex</a><small>1</small></li>
+  
+    <li><a href="/tags/transmission/">transmission</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'neverdoubtingme';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

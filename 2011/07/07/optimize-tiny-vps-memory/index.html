@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>小内存VPS优化 | Never Doubting Me</title>
+  <meta name="author" content="znithy">
+  
+  <meta name="description" content="适用256MB内存以下的VPS.
+文件位置可以使用find / -name filename查找.
+MySQL优化
+编辑/etc/my.cnf (以下为全文件内容)
+[mysqld]
+port      = 3306
+socket    = /tmp/mysql.sock
+key_buffer = 16K
+max_allowed_packet = 1M
+table_cache = 4
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 64K
+loose-skip-innodb
+skip-external-locking
+
+[mysqldump]
+quick
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+
+[isamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[myisamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[mysqlhotcopy]
+interactive-timeout
+nginx优化
+编辑nginx.conf
+worker_processes 1; # 只使用1个进程
+worker_connections  1024; #减少连接数
+把下面这行添加到 /etc/security/limits.conf,限制nginx用户组使用512k大小的堆栈:
+nginx        hard    stack            512
+Apache优化
+编辑httpd-mpm.conf
+&lt;IfModule mpm_prefork_module&gt;
+    StartServers           1
+    MinSpareServers       2
+    MaxSpareServers       2
+    MaxClients            3
+    MaxRequestsPerChild   50
+&lt;/IfModule&gt;
+PHP优化
+编辑php.ini
+max_execution_time = 90     ; Maximum execution time of each script, in seconds
+max_input_time = 60     ; Maximum amount of time each script may spend parsing r
+equest data
+;max_input_nesting_level = 64 ; Maximum input variable nesting level
+memory_limit = 32M      ; Maximum amount of memory a script may consume (128MB)">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="小内存VPS优化"/>
+  <meta property="og:site_name" content="Never Doubting Me"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Never Doubting Me" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'></script>
+<!-- CDN upload request sent in private mail to generated-toc author -->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40380285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Never Doubting Me</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-07-06T22:52:12.000Z"><a href="/2011/07/07/optimize-tiny-vps-memory/">Jul 7 2011</a></time>
+      
+      
+  
+    <h1 class="title">小内存VPS优化</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>适用256MB内存以下的VPS.</p>
+<p>文件位置可以使用<code>find / -name filename</code>查找.</p>
+<h2>MySQL优化</h2>
+<p>编辑/etc/my.cnf (以下为全文件内容)</p>
+<pre><code>[mysqld]
+port      = 3306
+socket    = /tmp/mysql.sock
+key_buffer = 16K
+max_allowed_packet = 1M
+table_cache = 4
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 64K
+loose-skip-innodb
+skip-external-locking
+
+[mysqldump]
+quick
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+
+[isamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[myisamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[mysqlhotcopy]
+interactive-timeout</code></pre>
+<h2>nginx优化</h2>
+<p>编辑<code>nginx.conf</code></p>
+<pre><code>worker_processes 1; # 只使用1个进程
+worker_connections  1024; #减少连接数</code></pre>
+<p>把下面这行添加到 <code>/etc/security/limits.conf</code>,限制nginx用户组使用512k大小的堆栈:</p>
+<pre><code>nginx        hard    stack            512</code></pre>
+<h2>Apache优化</h2>
+<p>编辑<code>httpd-mpm.conf</code></p>
+<pre><code>&lt;IfModule mpm_prefork_module&gt;
+    StartServers           1
+    MinSpareServers       2
+    MaxSpareServers       2
+    MaxClients            3
+    MaxRequestsPerChild   50
+&lt;/IfModule&gt;</code></pre>
+<h2>PHP优化</h2>
+<p>编辑<code>php.ini</code></p>
+<pre><code>max_execution_time = 90     ; Maximum execution time of each script, in seconds
+max_input_time = 60     ; Maximum amount of time each script may spend parsing r
+equest data
+;max_input_nesting_level = 64 ; Maximum input variable nesting level
+memory_limit = 32M      ; Maximum amount of memory a script may consume (128MB)</code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/vps/">VPS</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:never.doubting.me">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/apache/">Apache</a><small>1</small></li>
+  
+    <li><a href="/tags/ispconfig/">ISPconfig</a><small>1</small></li>
+  
+    <li><a href="/tags/linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
+  
+    <li><a href="/tags/php/">PHP</a><small>1</small></li>
+  
+    <li><a href="/tags/pt/">PT</a><small>1</small></li>
+  
+    <li><a href="/tags/vps/">VPS</a><small>3</small></li>
+  
+    <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/github/">github</a><small>3</small></li>
+  
+    <li><a href="/tags/google/">google</a><small>1</small></li>
+  
+    <li><a href="/tags/habari/">habari</a><small>5</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/octopress/">octopress</a><small>3</small></li>
+  
+    <li><a href="/tags/ruby/">ruby</a><small>1</small></li>
+  
+    <li><a href="/tags/tex/">tex</a><small>1</small></li>
+  
+    <li><a href="/tags/transmission/">transmission</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'neverdoubtingme';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
