@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 4 | Never Doubting Me</title>
+  <meta name="author" content="znithy">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Never Doubting Me"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Never Doubting Me" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'></script>
+<!-- CDN upload request sent in private mail to generated-toc author -->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40380285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Never Doubting Me</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-18T01:22:07.000Z"><a href="/2010/02/18/using-jquery-to-display-images-in-habari/">Feb 18 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/18/using-jquery-to-display-images-in-habari/">Habari中使用jQuery来预览图片</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>wordpress中使用jQuery来预览图片的插件很多,特别是lightbox,相信很多人都用过.</p>
+<p>这儿介绍下怎样在Habari中使用这项功能.这儿以ThickBox和ShadowBox这两个通用插件为例.并且只实现最简单的图片预览功能.</p>
+<h2>ThickBox</h2>
+<p>1)下载ThickBox,<a href="http://jquery.com/demo/thickbox/">点击进入官网</a>.我们这主要使用(<code>thickbox-compressed.js</code> , <code>thickbox.css</code> ,<code>jQuery.js</code>)这三个文件.</p>
+<p>2)在网页模板的目录下建立<code>thickbox</code>文件夹,上传这三个文件和附带一些图片文件进此文件夹.</p>
+<p>3)修改模板的文件<code>header.php</code>,一般此文件头部<code>&lt;head&gt;</code>和<code>&lt;/head&gt;</code>间都会有<code>&lt;link rel=&quot;stylesheet&quot; ...&gt;</code> 这样的代码,我们要加入的代码和这类似,所以也写在这地方,内容是:</p>
+<pre><code class="lang-html">&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/jquery.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/thickbox-compressed.js&quot;&gt;&lt;/script&gt;
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/thickbox.css&quot; type=&quot;text/css&quot; media=&quot;screen&quot; /&gt;</code></pre>
+<p>4)完成工作了,以后只要在图片的链接代码里加上<code>class=&quot;thickbox&quot;</code>就可以了.比如:</p>
+<pre><code class="lang-html">&lt;a title=&quot;图片的标题&quot; class=&quot;thickbox&quot; href=&quot;链接的图片地址&quot; &gt;&lt; img src=&quot;显示的图片地址&quot; /&gt;&lt;/a&gt;</code></pre>
+<h2>Shadow Box</h2>
+<p>ShadowBox与ThickBox类似</p>
+<p>1)下载shadowbox,<a href="http://www.shadowbox-js.com/index.html">点击进入官网</a>.我们这主要使用(<code>shadowbox.css</code> , <code>shadowbox.js</code>)两个文件.</p>
+<p>2)在网页模板的目录下建立<code>shadowbox</code>文件夹,上传这两个文件和附带一些图片文件进此文件夹.</p>
+<p>3)修改模板的文件<code>header.php</code>,一般此文件头部<code>&lt;head&gt;</code>和<code>&lt;/head&gt;</code>间都会有<code>&lt;link rel=&quot;stylesheet&quot; ...&gt;</code>这样的代码,我们要加入的代码和这类似,所以也写在这地方,内容是:</p>
+<pre><code class="lang-html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/shadowbox/shadowbox.css&quot;&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/shadowbox/shadowbox.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+Shadowbox.init();
+
+&lt;/script&gt;</code></pre>
+<p>4)完成工作了,以后只要在图片的链接代码里加上<code>rel=&quot;shadowbox&quot;</code>就可以了.比如:</p>
+<pre><code class="lang-html">&lt;a title=&quot;图片的标题&quot; rel=&quot;shadowbox&quot; href=&quot;链接的图片地址&quot; &gt;&lt; img src=&quot;显示的图片地址&quot; /&gt;&lt;/a&gt;</code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/18/using-jquery-to-display-images-in-habari/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-02-18T01:16:09.000Z"><a href="/2010/02/18/plugins-and-themes-of-habari/">Feb 18 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/02/18/plugins-and-themes-of-habari/">Habari的插件和主题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2>怎样安装主题和插件</h2>
+<p>Habari的主题和插件安装在两个地方,系统自带的在<code>system</code>目录下的<code>plugins</code>和<code>themes</code>.用户安装的在<code>user</code>目录下的<code>plugins</code>和<code>themes</code>文件夹.</p>
+<p>一般只要把想要安装的插件或主题上传到<code>user</code>中对应的文件夹后再进后台选择使用就可.</p>
+<h2>在哪儿下载插件和主题:</h2>
+<h4>Habari维基上资源,有下载链接,并且有简介,但不全:</h4>
+<blockquote>
+<p><strong>主题</strong>: <a href="http://wiki.habariproject.org/en/Available_Themes">http://wiki.habariproject.org/en/Available_Themes</a></p>
+<p><strong>插件</strong>: <a href="http://wiki.habariproject.org/en/Available_Plugins">http://wiki.habariproject.org/en/Available_Plugins</a></p>
+</blockquote>
+<h4>SVN上的资源,为最新版本:</h4>
+<p>可以通过在命令行中输入&quot;svn co 链接地址&quot;下载.</p>
+<blockquote>
+<p><strong>主题</strong>: <a href="http://svn.habariproject.org/habari-extras/themes/">http://svn.habariproject.org/habari-extras/themes/</a></p>
+<p><strong>插件</strong>: <a href="http://svn.habariproject.org/habari-extras/plugins/">http://svn.habariproject.org/habari-extras/plugins/</a></p>
+</blockquote>
+<h4>压缩包下载:</h4>
+<blockquote>
+<p><strong>主题</strong>: <a href="http://habariproject.org/dist/themes/">http://habariproject.org/dist/themes/</a></p>
+<p><strong>插件</strong>: <a href="http://habariproject.org/dist/plugins/">http://habariproject.org/dist/plugins/</a></p>
+</blockquote>
+<h2>遇到问题去哪儿问:</h2>
+<p>官方的解答问题平台,建议先搜索: <a href="https://trac.habariproject.org/habari">https://trac.habariproject.org/habari</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2010/02/18/plugins-and-themes-of-habari/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/3/" class="alignleft prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:never.doubting.me">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/apache/">Apache</a><small>1</small></li>
+  
+    <li><a href="/tags/ispconfig/">ISPconfig</a><small>1</small></li>
+  
+    <li><a href="/tags/linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
+  
+    <li><a href="/tags/php/">PHP</a><small>1</small></li>
+  
+    <li><a href="/tags/pt/">PT</a><small>1</small></li>
+  
+    <li><a href="/tags/vps/">VPS</a><small>3</small></li>
+  
+    <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/github/">github</a><small>3</small></li>
+  
+    <li><a href="/tags/google/">google</a><small>1</small></li>
+  
+    <li><a href="/tags/habari/">habari</a><small>5</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/octopress/">octopress</a><small>3</small></li>
+  
+    <li><a href="/tags/ruby/">ruby</a><small>1</small></li>
+  
+    <li><a href="/tags/tex/">tex</a><small>1</small></li>
+  
+    <li><a href="/tags/transmission/">transmission</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'neverdoubtingme';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

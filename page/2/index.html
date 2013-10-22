@@ -82,6 +82,252 @@ MathJax.Hub.Queue(function() {
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-04-18T02:03:00.000Z"><a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/">Apr 18 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/">教程: github设置ssh连接</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2>问题</h2>
+<p>本地与github关联时可能遇到ssh验证问题,类似如下提示信息:</p>
+<pre><code class="lang-bash">rake aborted!    
+undefined method `[]&#39; for nil:NilClass    
+
+Tasks: TOP =&gt; setup_github_pages    
+(See full trace by running task with --trace)</code></pre>
+<h2>原因</h2>
+<p>缺少建立ssh连接要求的秘钥.</p>
+<h2>解决方法</h2>
+<h3>1) 检查是否已经有ssh秘钥</h3>
+<pre><code class="lang-bash">cd ~/.ssh        
+ls -a</code></pre>
+<p>进入目录后,查看是否有<code>id_rsa</code>和<code>id_rsa.pub</code>这两个文件.</p>
+<p>如不存在<code>.ssh</code>文件夹,自然不存在上述两个文件.</p>
+<p>如已有这两个文件,直接跳到步骤3.</p>
+<h3>2) 生成ssh秘钥</h3>
+<pre><code class="lang-bash">ssh-keygen -t rsa -C &quot;youremail@example.com&quot;</code></pre>
+<p><code>youremail@example.com</code>是你的email地址. 在显示<code>Enter passphrase</code>时输入任意密码,其他选项直接回车(选择默认值).</p>
+<p>最后会生成<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件.</p>
+<h3>3) 复制key fingerprint到github</h3>
+<p>访问SSH设置网页:<a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a></p>
+<p>点击<code>Add SSH key</code>,<code>Title</code>任意,<code>key</code>输入<code>id_rsa.pub</code>文件的所有内容.之后点击<code>Add key</code>完成.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-17T23:13:00.000Z"><a href="/2013/04/18/2013-04-18-setup-octopress-on-github-step-by-step/">Apr 18 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/18/2013-04-18-setup-octopress-on-github-step-by-step/">教程:一步步在github上建立octopress博客</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><em>照此教程,可搭建此博客.</em></p>
+<p><img src="http://never.doubting.me/fancybox/image/octopress_logo.jpg" alt="Octopress LOGO"></p>
+<h2>目标</h2>
+<p>创建网址为<a href="http://never.doubting.me">http://never.doubting.me</a>的博客.博客使用octopress程序,搭建在github的服务器上.网页与本地机器的<code>never.doubting.me</code>文件夹同步.</p>
+<h2>步骤</h2>
+<h3>0) 配置环境</h3>
+<p>octopress需要ruby和git支持. 因此我们需要先安装这两个程序.
+这儿分windows和Mac分别讲下.</p>
+<p><strong>Windows(简略说下,详细教程请搜索):</strong></p>
+<p>下载并安装git:</p>
+<blockquote>
+<p><a href="http://git-scm.com/download">http://git-scm.com/download</a></p>
+</blockquote>
+<p>下载并安装Ruby和开发组件(DEVELOPMENT KIT),共两个文件,Ruby推荐1.9.3版,对octopuses支持很好:</p>
+<blockquote>
+<p><a href="http://rubyinstaller.org/downloads/">http://rubyinstaller.org/downloads/</a></p>
+</blockquote>
+<p><strong>Mac:</strong></p>
+<p>Mac本身自带了git,因此不需要单独安装.</p>
+<p>Octopress需要带openssl组件的ruby支持.</p>
+<p>但新版本的ruby似乎编译对参数<code>--with-openssl-dir=my/openssl/dir</code>支持有问题, 因此推荐使用rvm安装管理多版本的Ruby, rvm默认安装Ruby 2.0版本, 这儿为了不发生兼容性问题, 除了默认的2.0, 再安装个带openssl的1.9.3版.</p>
+<ul>
+<li><p>确认<a href="https://developer.apple.com/xcode/">Xcode</a>和其自带的<code>命令行工具</code>已经安装.</p>
+<p>  如没有,Xcode可在App Store免费下载.<code>命令行工具</code>可以在<code>Xcode- Preferences - Download</code> 中    点击安装 <code>Command Line Tools</code>.</p>
+</li>
+<li><p>安装rvm, rvm是个软件管理工具,和Linux上的apt-get,yum之类类似.</p>
+</li>
+</ul>
+<pre><code class="lang-bash">sudo curl -L https://get.rvm.io | bash -s stable</code></pre>
+<p>在~/.bash_profile文件末尾添加:</p>
+<pre><code class="lang-bash">echo &#39;[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot;</code></pre>
+<p>加载下配置文件:</p>
+<pre><code class="lang-bash">source ~/.bash_profile</code></pre>
+<ul>
+<li>安装1.93版支持openssl的Ruby.</li>
+</ul>
+<pre><code class="lang-bash">rvm install 1.9.3 --with-gcc=clang ----with-openssl-dir=$HOME/.rvm/usr
+rvm use 1.9.3 --default</code></pre>
+<h3>1) 下载octopress至本地never.doubting.me文件夹</h3>
+<p>octopress的源代码同样在github上管理,因此我们使用git克隆一份到本地的<code>never.doubting.me</code>文件夹,并进入此文件夹.
+如你没有域名,可以使用github提供的默认域名:<code>yourname.github.com</code>,yourname是你github的用户名.</p>
+<pre><code class="lang-bash">git clone git://github.com/imathis/octopress.git never.doubting.me
+cd never.doubting.me</code></pre>
+<h3>2) 安装相关组件</h3>
+<pre><code class="lang-bash">gem install bundler
+bundle install</code></pre>
+<h3>3) 安装主题</h3>
+<pre><code class="lang-bash">rake install</code></pre>
+<p>上条命令安装默认主题,在<a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes</a>可以找到许多第三方主题,这儿我们选择<a href="http://zespia.tw/Octopress-Theme-Slash/">slash</a>主题,如询问是否覆盖,选择是:</p>
+<pre><code class="lang-bash">git clone git://github.com/tommy351/Octopress-Theme-Slash.git .themes/slash
+rake install[&#39;slash&#39;]</code></pre>
+<h3>4) 在github上创建repository</h3>
+<p>去<a href="http://github.com">Github</a>上注册个账户,选择免费套餐.</p>
+<p>新建一个repository.</p>
+<p><strong>注意:repository的名字一定要<code>yourname.github.com</code>这样的格式.</strong>
+<code>yourname</code>是你注册时的用户名.</p>
+<p>这儿我创建名为<code>znithy.github.com</code>的repository,创建好后拷贝ssh地址.</p>
+<p><code>https://github.com/znithy/znithy.github.com.git</code></p>
+<h3>5) 建立本地与github的联系</h3>
+<pre><code class="lang-bash">rake setup_github_pages</code></pre>
+<p>输入上述ssh地址,注意区分大小写.
+如遇验证问题,提示类似</p>
+<pre><code class="lang-bash">rake aborted!
+undefined method
+[]&#39; for nil:NilClass
+
+Tasks: TOP =&gt; setup_github_pages
+(See full trace by running task with --trace)</code></pre>
+<p>的信息,请看此文:<a href="http://never.doubting.me/2013/04/18/2013-04-18-github-set-up-ssh-keys/">github设置ssh验证</a></p>
+<h3>6) 绑定域名</h3>
+<p>首先把你的域名指向<code>207.97.227.245</code>,如不知怎么操作,请咨询域名注册商.
+在source文件夹下建立CNAME文件:</p>
+<pre><code class="lang-bash">echo &#39;never.doubting.me&#39; &gt;&gt; source/CNAME</code></pre>
+<h3>7) 生成网页并推送到github</h3>
+<pre><code class="lang-bash">rake generate
+rake deploy</code></pre>
+<p>稍等几分钟,你就可通过域名访问博客了.并且收到一封博客建立的信件.</p>
+<h3>8) 自定义博客</h3>
+<p>博客的基本信息在<code>_config.yml</code>文件中修改.
+自定义css等在<code>source</code>文件夹中.
+修改后别忘了:</p>
+<pre><code class="lang-bash">rake generate
+rake deploy</code></pre>
+<h3>9) 发表文章</h3>
+<pre><code>rake new_post[&quot;教程:一步步在github上建立octopress博客&quot;]</code></pre>
+<p>这儿我新建了一篇名为<code>教程:一步步在github上建立octopress博客</code>的文章.
+之后去<code>source/_post/</code>文件夹找到对应<code>.markdown</code>文件修改.</p>
+<p>打开文件后可以看到文件头包含一些文章的信息,这儿我修改为:</p>
+<pre><code class="lang-html">---
+layout: post    
+title: &quot;教程:一步步在github上建立octopress博客&quot;    
+date: 2013-04-18 01:13    
+author: znithy    
+comments: true    
+categories:     
+- 教程    
+- github    
+- octopress    
+published: false
+---</code></pre>
+<p>第一张指明此篇是<code>post</code>,后面是标题,时间和作者,我加了<code>教程</code> <code>github</code> <code>octopuses</code> 三个标签,并且允许评论,<code>published: false</code>表示不要发表,如想要发表改成<code>published: true</code>或者直接删掉这行.</p>
+<p>文章直接写在这部分内容下面.</p>
+<h3>10) 发表外链文章</h3>
+<p>点击标题转向其他网页.创建方法同上,只是需要添加<code>external-url</code>这个条目.
+下面是一个例子:</p>
+<pre><code class="lang-html">---        
+layout: post    
+title: &quot;非常不错的科学博客&quot;    
+date: 2013-04-18 01:13         
+comments: true        
+external-url: http://keep.doubting.me/        
+---</code></pre>
+<h3>11) 发表页面</h3>
+<p>创建网址为<code>http://never.doubting.me/about/i.html</code>的网页:</p>
+<pre><code class="lang-bash">rake new_page[about/i.html]</code></pre>
+<p>与<code>post</code>不同的是,此时没有<code>categories</code>这个条目,但多了<code>sharing</code>和<code>footer</code>,具体有什么作用,不妨自己试下.</p>
+<pre><code class="lang-html">---    
+layout: page        
+title: &quot;Super Awesome&quot;    
+date: 2011-07-03 5:59    
+comments: true    
+sharing: true    
+footer: true        
+---</code></pre>
+<h3>12) 管理文章</h3>
+<p>直接增加或删除.markdown文件即可.
+每次更新文件后别忘了:</p>
+<pre><code class="lang-bash">rake generate
+rake deploy</code></pre>
+<h2>其他</h2>
+<h3>git设置用户名</h3>
+<p>默认情况下直接使用系统的用户名,也可通过下面的命令自定义:</p>
+<pre><code class="lang-bash">git config --global user.name author #将用户名设为author    
+git config --global user.email author@mail.com #将用户邮箱设为author@mail.com</code></pre>
+<h3>关于怎样使用git,这份教程很不错,推荐.</h3>
+<blockquote>
+<p><a href="http://znithy.com/download/看日记学git.pdf">看日记学git.pdf</a></p>
+</blockquote>
+<h3>第三方插件地址:</h3>
+<blockquote>
+<p><a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">https://github.com/imathis/octopress/wiki/3rd-party-plugins</a></p>
+</blockquote>
+<h3>中文问题:</h3>
+<p>如遇到此类提示(可能因设置了中文的catagory):</p>
+<pre><code class="lang-bash">...
+Liquid Exception: invalid byte sequence in UTF-8 in atom.xml
+/Documents/never.doubting.me/plugins/octopress_filters.rb:75:in `gsub&#39;
+/Documents/never.doubting.me/plugins/octopress_filters.rb:75:in `cdata_escape&#39;
+...</code></pre>
+<p>最方便的方法是换用kramdown.首先安装kramdown:</p>
+<pre><code class="lang-bash">gem install kramdown</code></pre>
+<p>之后修改<code>_config.yml</code>文件:</p>
+<pre><code class="lang-html">markdown: kramdown</code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/18/2013-04-18-setup-octopress-on-github-step-by-step/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-03-15T19:17:03.000Z"><a href="/2013/03/15/transmission-install-script-2.77/">Mar 15 2013</a></time>
       
       
@@ -287,166 +533,6 @@ Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
         
           <div class="alignleft">
             <a href="/2011/08/28/set-up-openvz-with-vswap/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2011-07-18T20:40:35.000Z"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">Jul 18 2011</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">LAMP+ISPconfig控制面板的一键安装包-LAMPI</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><img src="http://never.doubting.me/fancybox/image/LAMPI.PNG" alt="LAMPI Control Panel"></p>
-<p>ISPconfig这个面板一直在保持更新，界面也简洁。但安装过程比较繁琐，因此我在borgo07年写的lamp半自动安装脚本基础上做了修改. 更新了软件，自动修改配置文件，汉化了安装界面，加入了ISPconfig面板，对dovecot的启动错误进行了修复。</p>
-<p><strong>这是CentOS版。</strong></p>
-<h2>包含的软件</h2>
-<blockquote>
-<p>BIND9 (chrooted)<br>Apache with SSL support<br>PHP<br>Python<br>MySQL<br>proftpd<br>postfix<br>dovecot<br>Webalizer<br>ISPconfig    </p>
-</blockquote>
-<h2>安装方法</h2>
-<p>1)首先请设置你的ssh软件支持UTF8编码，要不然可能会出现乱码。</p>
-<p>2)下载一键安装脚本:</p>
-<pre><code class="lang-bash">wget http://znithy.com/download/lampi.sh</code></pre>
-<p>用文本编辑器打开lampi.sh，自定义mySQL密码和其他一些参数。
-(在文件头部，打开后一下就能看到了，当然你也可以不修改，采取默认设置。)</p>
-<p>3)上传lampi.sh和proftpd文件。</p>
-<p>4)修改权限并运行脚本</p>
-<pre><code class="lang-bash">  chmod 777 lampi.sh
-  ./lampi.sh</code></pre>
-<p>5)按中文提示操作即可。但在安装ISPconfig时提示是英文的，需要输入sql密码，你的地址，邮箱之类的信息。</p>
-<p>6)完成安装</p>
-<blockquote>
-<p>默认mySQL用户名root,密码123456</p>
-<p>面板地址:<br><a href="http://ip:8080">http://ip:8080</a><br>用户名admin，密码admin。    </p>
-</blockquote>
-<h2>官方演示地址</h2>
-<blockquote>
-<p><a href="http://demo3.ispconfig.org/">http://demo3.ispconfig.org/</a></p>
-<p>管理员面板<br>用户名: admin<br>密码: demo    </p>
-<p>Reseller面板<br>用户名: reseller<br>密码: demo    </p>
-<p>客户面板<br>用户名: client<br>密码: demo    </p>
-</blockquote>
-<h2>其他</h2>
-<p>没优化的情况下重启后的初始内存消耗略小于200MB，其中DNS和邮件服务占了85MB.</p>
-<p>中文语言包网上有，请google。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2011/07/18/lamp-ispconfig-install-script-lampi/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2011-07-06T22:52:12.000Z"><a href="/2011/07/07/optimize-tiny-vps-memory/">Jul 7 2011</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2011/07/07/optimize-tiny-vps-memory/">小内存VPS优化</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>适用256MB内存以下的VPS.</p>
-<p>文件位置可以使用<code>find / -name filename</code>查找.</p>
-<h2>MySQL优化</h2>
-<p>编辑/etc/my.cnf (以下为全文件内容)</p>
-<pre><code>[mysqld]
-port      = 3306
-socket    = /tmp/mysql.sock
-key_buffer = 16K
-max_allowed_packet = 1M
-table_cache = 4
-sort_buffer_size = 64K
-read_buffer_size = 256K
-read_rnd_buffer_size = 256K
-net_buffer_length = 2K
-thread_stack = 64K
-loose-skip-innodb
-skip-external-locking
-
-[mysqldump]
-quick
-max_allowed_packet = 16M
-
-[mysql]
-no-auto-rehash
-
-[isamchk]
-key_buffer = 8M
-sort_buffer_size = 8M
-
-[myisamchk]
-key_buffer = 8M
-sort_buffer_size = 8M
-
-[mysqlhotcopy]
-interactive-timeout</code></pre>
-<h2>nginx优化</h2>
-<p>编辑<code>nginx.conf</code></p>
-<pre><code>worker_processes 1; # 只使用1个进程
-worker_connections  1024; #减少连接数</code></pre>
-<p>把下面这行添加到 <code>/etc/security/limits.conf</code>,限制nginx用户组使用512k大小的堆栈:</p>
-<pre><code>nginx        hard    stack            512</code></pre>
-<h2>Apache优化</h2>
-<p>编辑<code>httpd-mpm.conf</code></p>
-<pre><code>&lt;IfModule mpm_prefork_module&gt;
-    StartServers           1
-    MinSpareServers       2
-    MaxSpareServers       2
-    MaxClients            3
-    MaxRequestsPerChild   50
-&lt;/IfModule&gt;</code></pre>
-<h2>PHP优化</h2>
-<p>编辑<code>php.ini</code></p>
-<pre><code>max_execution_time = 90     ; Maximum execution time of each script, in seconds
-max_input_time = 60     ; Maximum amount of time each script may spend parsing r
-equest data
-;max_input_nesting_level = 64 ; Maximum input variable nesting level
-memory_limit = 32M      ; Maximum amount of memory a script may consume (128MB)</code></pre>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2011/07/07/optimize-tiny-vps-memory/#more" class="more-link">Read More</a>
           </div>
         
         
