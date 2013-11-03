@@ -82,6 +82,228 @@ MathJax.Hub.Queue(function() {
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-03-15T19:17:03.000Z"><a href="/2013/03/15/transmission-install-script-2.77/">Mar 15 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/03/15/transmission-install-script-2.77/">transmission一键安装包</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://never.doubting.me/fancybox/image/transmission_2.77.png" alt="transmission web client"></p>
+<p>这篇文章讲怎样在自己的服务器或者VPS上安装Transmission网页版客户端.</p>
+<p>Transmission用于PT非常流行,以下脚本安装2.77版.</p>
+<h2>使用方法 (CentOS):</h2>
+<pre><code class="lang-bash">wget http://znithy.com/download/pthostloc_2.77.sh
+sh ./pthostloc_2.77.sh</code></pre>
+<blockquote>
+<p>默认登录地址:<code>http://ip:1911</code><br>默认用户名:<code>hostloc</code><br>默认密码:<code>znithy@hostloc.com</code><br>下载文件位置:<code>/home/transmission/Downloads/</code>        </p>
+</blockquote>
+<p><strong>请安装后修改用户名(rpc-username),密码(rpc-password),端口(rpc-port):</strong></p>
+<p>这些设置都在<code>/home/transmission/.config/transmission/settings.json</code>文件,
+修改前停止服务: </p>
+<pre><code class="lang-bash">service transmissiond stop</code></pre>
+<p>修改后重启服务: </p>
+<pre><code class="lang-bash">service transmissiond start</code></pre>
+<p>注意这脚本是给CentOS用的.</p>
+<p>对于Ubuntu,可以尝试把脚本里的<code>yum</code>改成<code>apt-get</code>.主要的几个组件都是编译安装的,应该没问题.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/03/15/transmission-install-script-2.77/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-09-19T23:32:49.000Z"><a href="/2011/09/20/get-your-free-whmcs/">Sep 20 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/09/20/get-your-free-whmcs/">免费获得正版WHMCS</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>WHMCS给hostgator和hostdime的用户提供免费正版授权.</p>
+<p>只有你有hostgator或者hostdime的IP的空间就可以免费用whmcs,如果你手里有这两家的空间那正巧,没有的话淘宝随便几块钱一个月的找家分销的.有了空间后按如下步骤操作.</p>
+<p>1) 解析你的域名到hostgator或者hostdime的空间的IP，</p>
+<p>2) 然后分别去对应的页面验证下就行了,会得到个授权许可.</p>
+<blockquote>
+<p><a href="http://www.whmcs.com/hostdime/">http://www.whmcs.com/hostdime/</a><br><a href="http://www.whmcs.com/hostgator/">http://www.whmcs.com/hostgator/</a></p>
+</blockquote>
+<p>3) 安装whmcs时需要填这个授权许可码</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/09/20/get-your-free-whmcs/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-08-27T22:29:56.000Z"><a href="/2011/08/28/set-up-openvz-with-vswap/">Aug 28 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/08/28/set-up-openvz-with-vswap/">架建最新带VSwap的OpenVZ服务器</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>因为是新技术，就想测试下，按照PETER NILSSONS的文章和openvz wiki的资料试了下，暂时没遇到问题。
+这儿记录下安装过程，有兴趣的朋友也可玩下，安装没几步，很容易。</p>
+<h2>先介绍下VSwap</h2>
+<p>RHEL6(Redhat6, CentOS6, Fedora 12/13/14)系列系统新支持的内存管理技术，替代了原来的User beancounters。</p>
+<p>现在分成了physpages（最大内存）和swappages（最大swap）这两个参数，当最大内存达到后，内存就移入VSwap（替代了原来的burstRAM）,
+这个VSwap是内存模拟的swap，和普通的swap相比没有硬盘I/O操作，所以比XEN的Swap要快，但模拟swap本身这个过程会使机器变慢。
+当母鸡内存短缺后，VSwap会被移入真实的硬盘swap中。</p>
+<h2>安装步骤</h2>
+<p>注意到，这是RHEL6带的技术，所以母鸡不能是常用的CentOS 5，我以CentOS6.0为例:</p>
+<h3>1）设置yum源</h3>
+<pre><code class="lang-bash">cd /etc/yum.repos.d
+wget http://download.openvz.org/openvz.repo
+wget http://download.openvz.org/RPM-GPG-Key-OpenVZ
+rpm --import RPM-GPG-Key-OpenVZ</code></pre>
+<h3>2）修改 /etc/yum.repos.d/openvz.repo文件，这文件默认支持rhel5，我们把他改成支持rhel6.</h3>
+<pre><code class="lang-bash">vi /etc/yum.repos.d/openvz.repo</code></pre>
+<p>修改<code>[openvz-kernel-rhel5]</code>下的 <code>enabled = 0</code>, <code>[openvz-kernel-rhel6]</code>下的 <code>enabled = 1</code></p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz01.png" alt="openvz.repo setting"></p>
+<p>改好后</p>
+<pre><code class="lang-bash">yum update</code></pre>
+<h3>3）安装openvz</h3>
+<pre><code class="lang-bash">yum install vzkernel</code></pre>
+<h3>4）修改 /etc/sysctl.conf文件</h3>
+<pre><code class="lang-bash">vi /etc/sysctl.conf</code></pre>
+<p>改成如下：</p>
+<pre><code># Kernel sysctl configuration file for Red Hat Linux    
+#
+# For binary values, 0 is disabled, 1 is enabled.  See sysctl(8) and
+# sysctl.conf(5) for more details.
+
+# Controls IP packet forwarding
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+
+#disable arp proxy
+net.ipv4.conf.default.proxy_arp = 0
+
+
+# Controls source route verification
+net.ipv4.conf.default.rp_filter = 1
+
+# Do not accept source routing
+net.ipv4.conf.default.accept_source_route = 0
+
+# Controls the System Request debugging functionality of the kernel
+kernel.sysrq = 1
+
+# Controls whether core dumps will append the PID to the core filename.
+# Useful for debugging multi-threaded applications.
+kernel.core_uses_pid = 1
+
+# Controls the use of TCP syncookies
+net.ipv4.tcp_syncookies = 1
+
+# Disable netfilter on bridges.
+net.bridge.bridge-nf-call-ip6tables = 0
+net.bridge.bridge-nf-call-iptables = 0
+net.bridge.bridge-nf-call-arptables = 0
+
+
+# We do not want all our interfaces to send redirects
+net.ipv4.conf.default.send_redirects = 1
+net.ipv4.conf.all.send_redirects = 0</code></pre>
+<p>应用设置：</p>
+<pre><code class="lang-bash">sysctl -p</code></pre>
+<h3>5）禁用SELINUX</h3>
+<pre><code>vi /etc/sysconfig/selinux</code></pre>
+<p>改参数：<code>SELINUX=disabled</code></p>
+<h3>6）重启主机：</h3>
+<pre><code>reboot</code></pre>
+<h3>7）安装OpenVZ管理面板</h3>
+<pre><code class="lang-bash">wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh</code></pre>
+<blockquote>
+<p>管理面板位于：<br><a href="http://你的ip:3000">http://你的ip:3000</a>  </p>
+<p>默认用户名/密码：<br>admin/admin    </p>
+</blockquote>
+<h3>8）建立小鸡</h3>
+<p>进入网页管理界面后大部分操作都在Physical Servers里进行。
+新建服务器，OS Templates里下载模板（点选下载会会自动后台下载，过一会而就好了），
+Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
+<p>这个就是建立VPS的界面，需要添ID，选择方案什么的，看看就知道了</p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz02.png" alt="OpenVZ Panel"></p>
+<h3>9）SHELL下简单命令介绍（101是小鸡的ID</h3>
+<blockquote>
+<p>进入小鸡: vzctl enter 101<br>退出小鸡：exit<br>小鸡HOSTNAME: vzctl set 101 --hostname HOSTNAME --save<br>小鸡IP: vzctl set 101 --ipadd YourIP --save<br>小鸡DNS: vzctl set 101 --nameserver DNSIP --save<br>小鸡用户名/密码: vzctl set 101 --userpasswd USERNAME:PASSWORD<br>设置随母鸡自动开机: vzctl set 101 --onboot yes --save<br>开/关/重启小鸡: vzctl start/stop/restart 101<br>删除小鸡: vzctl destroy 101    </p>
+<p>更多的命令请看<a href="http://openvz.org/Main_Page">openvz wiki</a>或自行google。    </p>
+</blockquote>
+<p><em>最后这张是小鸡free -m的图，可以看到有了2G的SWAP区：</em></p>
+<p><img src="http://never.doubting.me/fancybox/image/openvz03.png" alt="openvz example"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/08/28/set-up-openvz-with-vswap/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2011-07-18T20:40:35.000Z"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">Jul 18 2011</a></time>
       
       
@@ -236,202 +458,6 @@ memory_limit = 32M      ; Maximum amount of memory a script may consume (128MB)<
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2010-02-19T01:36:21.000Z"><a href="/2010/02/19/how-to-display-recent-comments-in-habari/">Feb 19 2010</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2010/02/19/how-to-display-recent-comments-in-habari/">Habari中显示&quot;最近评论&quot;</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>Habari虽然有recentcomments和freshcomments这两个显示最近的评论的插件,但我试了下,运气差了些,没一个能用起来,所以只能自己动手了,看到miklb和我用一样的模板,他右边sidebar的Recent Comments做的真不错,和主题风格符合的好,就看着他网站的样子做了个.</p>
-<p>在Habari的wiki上可以查到显示最近评论的方法,这儿先简单引用下:</p>
-<p>1)在模板<code>theme.php</code>文件的<code>add_template_vars</code>这个函数中插入如下代码,修改&quot;25&quot;为你想显示的数目: </p>
-<pre><code class="lang-php">$this-&gt;assign(&#39;recent_comments&#39;,
-              Comments::get( array(&#39;limit&#39;=&gt;25, &#39;status&#39;=&gt;Comment::STATUS_APPROVED,
-                                   &#39;type&#39;=&gt;Comment::COMMENT, &#39;orderby&#39;=&gt;&#39;date DESC&#39; ) ) );</code></pre>
-<p>2)在需要显示的地方(比如侧边栏<code>sidebar.php</code>)插入:</p>
-<pre><code class="lang-php">&lt;h3&gt;Recent Comments&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;?php foreach($recent_comments as $comment): ?&gt;
-    &lt;li&gt;
-      &lt;a href=&quot;&lt;?php echo $comment-&gt;url ?&gt;&quot;&gt;
-        &lt;?php echo $comment-&gt;name; ?&gt;
-      &lt;/a&gt; on
-      &lt;a href=&quot;&lt;?php echo $comment-&gt;post-&gt;permalink; ?&gt;&quot;&gt;
-        &lt;?php echo $comment-&gt;post-&gt;title; ?&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-  &lt;?php endforeach; ?&gt;
-&lt;/ul&gt;</code></pre>
-<p>这样就能实现最近评论功能了.</p>
-<p>接着我写下现在使用的这个模板的&quot;最近评论&quot;代码,稍微美化了下,引入了Gravatar头像和RSS链接.</p>
-<p><code>theme.php</code>插入相同的代码,接着在CSS中加两段:</p>
-<pre><code class="lang-css">div#recentcomments ul{
-        text-align:justify;
-        padding-bottom: 7px;
-        margin-bottom:7px;
-        border-bottom: #eaeaea 1px solid;
-    min-height: 25px;
-}
-div#recentcomments div.gravatar_mini
-{
-    float:left;
-        margin-right:5px;
-}</code></pre>
-<p>接着在<code>sidebar.php</code>中加入这么一段:</p>
-<pre><code class="lang-php">&lt;div id=&quot;recentcomments&quot;&gt;
-&lt;h3&gt;&lt;a href=&quot;http://never.doubting.me/atom/comments&quot; title=&quot;Comments Feed&quot;&gt;&lt;img alt=&quot;comments Feed&quot;
-src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/images/feed.png&quot; /&gt;&lt;/a&gt;&amp;nbsp;Recent Comments&lt;/h3&gt;
-    &lt;?php foreach($recent_comments as $comment): ?&gt;
-
-   &lt;ul&gt;
-       &lt;div class=&quot;gravatar_mini&quot;&gt;      
-        &lt;img alt=&quot;Gravatars Icon&quot; src = &quot;&lt;?php echo 
-        &quot;http://www.gravatar.com/avatar/&quot;.md5( $comment-&gt;email ).&quot;?s=25&quot; ?&gt;&quot;&gt;
-       &lt;/div&gt;
-   &lt;div&gt;
-   &lt;a href=&quot;&lt;?php echo $comment-&gt;url ?&gt;&quot;&gt;
-   &lt;?php echo $comment-&gt;name; ?&gt;&lt;/a&gt;
-   &lt;?php echo &quot; commented, &amp;quot;&quot;.$comment-&gt;content.&quot;&amp;quot;&quot;.&quot; on the post &quot;?&gt;
-   &lt;a href=&quot;&lt;?php echo $comment-&gt;post-&gt;permalink; ?&gt;&quot;&gt;
-   &lt;?php echo $comment-&gt;post-&gt;title.&quot;.&quot;; ?&gt;&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;/ul&gt;                                  
-&lt;?php endforeach; ?&gt;
-&lt;/div&gt;</code></pre>
-<p>完成了 :)</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2010/02/19/how-to-display-recent-comments-in-habari/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2010-02-19T01:33:23.000Z"><a href="/2010/02/19/how-to-invoke-gravatat-portrait-in-habari-template/">Feb 19 2010</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2010/02/19/how-to-invoke-gravatat-portrait-in-habari-template/">Habari模板中调用Gravatar头像</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>前面一篇讲了利用插件来调用Gravatar头像,但有时我们同一个网站需要不同大小的Gravatar头像,或是自定义Gravatar的默认头像,插件可能没这么多功能,所以我们来看看Gravatar网站提供的方法,可以实现全部功能.</p>
-<p>html中只要插入  <code>&lt;img alt=&quot;Gravatars Icon&quot; src = &quot;Gravatar图像地址&quot;&gt;</code> 就能实验调用,Gravatar图像地址可以带参数来实现不同功能.</p>
-<p>举例说明图像地址,最简单的形式是:</p>
-<p><code>http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802</code></p>
-<p>其中后面的一串数字是Email地址的MD5码,MD5码的转换各平台不同,一般为md5(Email地址).</p>
-<p>参数共3个,图像大小,默认图像和图像分级.举例:</p>
-<p><code>http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802?d=identicon&amp;s=80&amp;r=g</code></p>
-<p>可以看到参数都加在?号后,之间用&amp;连接.</p>
-<p>1) d代表默认头像(给那些没设置Gravatar的用),Gravatar网站提供了 &quot;identicon&quot; &quot;monsterid&quot; and &quot;wavatar&quot; 这三种,也可以输入自定义的图像地址.</p>
-<p>2) s代表图像大小,后面=80就是长宽都是80px.</p>
-<p>3)r是分级,后面的值共有g, pg, r, x这4种,越往后限制级越高(暴力,情色图片),默认是g.</p>
-<p>这句是我Habari中的调用语句,可以作为参考:</p>
-<pre><code class="lang-html">&lt;img alt=&quot;Gravatars Icon&quot; src = &quot;&lt;?php echo &quot;http://www.gravatar.com/avatar/&quot;.md5( $comment-&gt;email ).&quot;?s=25&quot; ?&gt;&quot;&gt;</code></pre>
-<p>更详细的内容请看<a href="http://en.gravatar.com/site/implement">官方网站</a>.</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2010/02/19/how-to-invoke-gravatat-portrait-in-habari-template/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2010-02-18T01:27:19.000Z"><a href="/2010/02/18/display-gravatar-portrait-in-habari/">Feb 18 2010</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2010/02/18/display-gravatar-portrait-in-habari/">Habari的Gravatar头像插件</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><a href="http://www.gravatar.com/">Gravatar</a>是一个提供通用头像的网站,你在Gravatar上传设置头像并且关联到Email地址后,以后支持Gravatar的网站留言,只要输入Email地址,就会自动显示头像.wordpress默认就支持Gravatar,Habari需要通过插件来使用这项功能.</p>
-<p>此插件由Andrew da Silva所写,在<a href="http://www.habariproject.org/dist/plugins/gravatar/">此处</a>下载对应你Habari版本的压缩包.</p>
-<p>关于怎样安装插件,请看<a href="http://reject.doubting.me/install-habari-theme-and-plugin-guide">此文</a>.</p>
-<p>安装后需要修改模板来实现功能,在需要显示Gravatar头像的地方加上:</p>
-<pre><code class="lang-html">&lt;img src=&quot;&lt;? echo $comment-&gt;gravatar ?&gt;&quot;&gt;</code></pre>
-<h3>举例:</h3>
-<p>先在css文件中加入这么段:</p>
-<pre><code class="lang-css">div#entry-comments div.gravatar
-{
-    float:right;
-    margin-left:10px;
-    margin-right:10px;
-}</code></pre>
-<p>接着在comments.php中找到正确的位置(各个模板不同),加入:</p>
-<pre><code class="lang-html">&lt;div class=&quot;gravatar&quot;&gt;
-
-&lt;img src=&quot;&lt;? echo $comment-&gt;gravatar ?&gt;&quot;&gt;
-
-&lt;/div&gt;</code></pre>
-<p>这样就完成了,当然你也可以直接在<code>comments.php</code>中加入那句话.</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2010/02/18/display-gravatar-portrait-in-habari/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
@@ -465,15 +491,23 @@ src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/images/feed.png&quot; /&gt;&l
   
     <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
   
+    <li><a href="/tags/nas/">NAS</a><small>1</small></li>
+  
     <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
   
     <li><a href="/tags/php/">PHP</a><small>1</small></li>
   
     <li><a href="/tags/pt/">PT</a><small>1</small></li>
   
+    <li><a href="/tags/quantum-field-theory/">Quantum Field Theory</a><small>1</small></li>
+  
+    <li><a href="/tags/r/">R</a><small>2</small></li>
+  
     <li><a href="/tags/vps/">VPS</a><small>3</small></li>
   
     <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/data-analysis/">data analysis</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>1</small></li>
   

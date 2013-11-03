@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>R数据分析 - R语言最最基础 | Never Doubting Me</title>
+  <meta name="author" content="znithy">
+  
+  <meta name="description" content="Scientific Inference - Learning from data by Simon Vaughan
+Appendix A:  Getting started with statistical computation
+运行R
+在Terminal中输入R开始运行.命令格式是command(arguments),如果没有arguments,则留空.注释使用#.
+赋予变量使用&lt;-:
+
+r &lt;- 200pi*r^2[1] 125663.7   
+
+R把数据看作向量和矩阵,因为上面的粒子标量,相当于1x1矩阵,因此输出时显示[1].
+1:20代表1,2,...,20的向量:
+
+x &lt;- 1:20x[1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20    
+
+求和,平均值和数目:
+
+sum(x)[1] 210mean(x)[1] 10.5var(x)[1] 35    
+
+标量点乘向量:
+
+2*x[1]  2  4  6  8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40
+
+画图,plot():
+
+y &lt;- (x-mean(x))^2plot(x,y)plot(x,y,type=&quot;l&quot;,xlab=&quot;This is X axis&quot;,ylab=&quot;This is y axis&quot;,main=&quot;Title&quot;,cex=2)
+
+查看历史记录,history():
+
+history()pi r^2x &lt;- 1:20xsum(x)mean(x)var(x)2*xy &lt;- (x-mean(x))^2plot(x,y)plot(x,y,type=&quot;l&quot;,xlab=&quot;This is X axis&quot;,ylab=&quot;This is y axis&quot;,main=&quot;Title&quot;,cex=2)history()    
+
+输入输出数据
+输入两行数据并输出到文件myfile.txt:
+
+varX &lt;- c(1,2,3,4,5)carY &lt;- c(5.2,5.6,6.3,3.6,1.2)dat &lt;- data.frame(varX,varY)write.table(dat, file=&quot;myfile.txt&quot;, row.names=FALSE)    
+
+文件输出在当前工作目录下,getwd()可查看当前目录位置,setwd()设置工作目录.
+读取文件:
+
+data.table &lt;- read.table(&quot;myfile.txt&quot;,header=TRUE)
+
+从网络读取数据:
+
+data.table &lt;- read.table(file=&quot;http://www.statsci.org/data/general/waves.txt&quot;, header=TRUE)n &lt;- length(data.table$Waves)time &lt;- (1:n)*0.15plot (time, data.table    $Waves,type=&quot;o&quot;,pch=16,ylab=&quot;Force&quot;,xlab=&quot;Time(s)&quot;)    
+
+编辑数据,使用与vi类似:
+
+x &lt;- edit(data.table$Waves)
+
+退出q():
+
+q()Save workspace image? [y/n/c]: n
+
+矩阵计算:
+生成矩阵:
+
+i &lt;- 1:6mat &lt;- matrix(i,nrow=2)print (mat)    [,1] [,2] [,3][1,]    1    3    5[2,]    2    4    6    
+
+计算平均值:
+
+rowMeans(mat)[1] 3 4colMeans(mat)[1] 1.5 3.5 5.5    
+
+apply(array,col/row,function)更为通用,1代表row,2代表column,可引用各种函数.
+和上例一样计算平均值:
+
+apply(mat,1,mean)[1] 3 4apply(mat,2,mean)[1] 1.5 3.5 5.5    
+
+计算方差variance:
+
+apply(mat,1,var)[1] 4 4apply(mat,2,var)[1] 0.5 0.5 0.5    
+
+添加元素:
+
+mat &lt;- rbind(mat,apply(mat,2,mean))mat &lt;- cbind(mat,apply(mat,1,mean))print(mat)
+    [,1] [,2] [,3] [,4][1,]  1.0  3.0  5.0  3.0[2,]  2.0  4.0  6.0  4.0[3,]  1.5  3.5  5.5  3.5    
+
+给各个行列命名:
+
+colnames(mat) &lt;- c(1:3,&quot;mean&quot;)rownames(mat) &lt;- c(1:2,&quot;mean&quot;)print (mat)      1   2   3 mean1    1.0 3.0 5.0  3.02    2.0 4.0 6.0  4.0mean 1.5 3.5 5.5  3.5    
+
+length和dimension:
+
+length(mat)[1] 12dim(mat)[1] 3 4    
+
+运行R脚本:
+
+source (&quot;myscript.R&quot;)    
+
+画图:
+
+x &lt;- seq(0,100)y &lt;- cumsum(rnorm(length(x)))+50plot(x,y,            #(x,y)type=&quot;o&quot;,            #type of plotpch=16,            #data symbol typelty=3,            #line typecex=0.5,            #expansion factorxlim=c(0,100),    #x-axis limitsylim=c(30,70),    #y-axis limitsxlab=&quot;Time&quot;,        #x-axis labelylab=&quot;Value&quot;,        #y-axis labelbty=&quot;n&quot;,            #box typelog=&quot;xy&quot;,            #logarithm
+main=&quot;Title&quot;)        #title    
+
+在图上添加图形:
+
+points()         # add new data points;lines()         # add lines through data;abline()         # add a straight line;text()         # add text to a graphic;legend()         # add a legend.     
+
+举例:画直线
+
+abline(h=50,lty=2)    
+
+举例:画函数曲线
+
+y &lt;- 50+x-0.02*x^2lines(x,y)    
+
+其他画图种类:
+
+pairs()           # produce a matrix of scatter plots;coplot()         # produce a series of scatter plots separated by a third variable;hist()         # histograms;dotchart()     # dot charts;image()         # intensity images;contour()         # contour maps;persp()         # projections of a surface.    
+
+输出图形到文件:
+
+jpeg(file=&quot;Routput.jpg&quot;,width=480,height=480)plot(rnorm(50),type=&quot;l&quot;,ylab=&quot;y&quot;)dev.off(dev.cur())    
+
+上面第一行初始化输出文件,第二行在文件中画图,第三行完成画图.可以画各种格式pdf,png,jpeg,ps等,输入?devie查看类型.">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="R数据分析 - R语言最最基础"/>
+  <meta property="og:site_name" content="Never Doubting Me"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Never Doubting Me" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <style TYPE="text/css">
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script type='text/javascript' src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'></script>
+<!-- CDN upload request sent in private mail to generated-toc author -->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40380285-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Never Doubting Me</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-10-23T22:25:08.000Z"><a href="/2013/10/24/the-very-basic-of-r-programming-language/">Oct 24 2013</a></time>
+      
+      
+  
+    <h1 class="title">R数据分析 - R语言最最基础</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><code>Scientific Inference - Learning from data by Simon Vaughan</code>
+<code>Appendix A:  Getting started with statistical computation</code></p>
+<h3>运行R</h3>
+<p>在Terminal中输入<code>R</code>开始运行.<br>命令格式是<code>command(arguments)</code>,如果没有arguments,则留空.<br>注释使用<code>#</code>.</p>
+<p>赋予变量使用<code>&lt;-</code>:</p>
+<blockquote>
+<p>r &lt;- 200<br>pi*r^2<br>[1] 125663.7   </p>
+</blockquote>
+<p>R把数据看作向量和矩阵,因为上面的粒子标量,相当于1x1矩阵,因此输出时显示<code>[1]</code>.</p>
+<p><code>1:20</code>代表1,2,...,20的向量:</p>
+<blockquote>
+<p>x &lt;- 1:20<br>x<br>[1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20    </p>
+</blockquote>
+<p>求和,平均值和数目:</p>
+<blockquote>
+<p>sum(x)<br>[1] 210<br>mean(x)<br>[1] 10.5<br>var(x)<br>[1] 35    </p>
+</blockquote>
+<p>标量点乘向量:</p>
+<blockquote>
+<p>2*x<br>[1]  2  4  6  8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40</p>
+</blockquote>
+<p>画图,plot():</p>
+<blockquote>
+<p>y &lt;- (x-mean(x))^2<br>plot(x,y)<br>plot(x,y,type=&quot;l&quot;,xlab=&quot;This is X axis&quot;,ylab=&quot;This is y axis&quot;,main=&quot;Title&quot;,cex=2)</p>
+</blockquote>
+<p>查看历史记录,history():</p>
+<blockquote>
+<p>history()<br>pi r^2<br>x &lt;- 1:20<br>x<br>sum(x)<br>mean(x)<br>var(x)<br>2*x<br>y &lt;- (x-mean(x))^2<br>plot(x,y)<br>plot(x,y,type=&quot;l&quot;,xlab=&quot;This is X axis&quot;,ylab=&quot;This is y axis&quot;,main=&quot;Title&quot;,cex=2)<br>history()    </p>
+</blockquote>
+<h3>输入输出数据</h3>
+<p>输入两行数据并输出到文件<code>myfile.txt</code>:</p>
+<blockquote>
+<p>varX &lt;- c(1,2,3,4,5)<br>carY &lt;- c(5.2,5.6,6.3,3.6,1.2)<br>dat &lt;- data.frame(varX,varY)<br>write.table(dat, file=&quot;myfile.txt&quot;, row.names=FALSE)    </p>
+</blockquote>
+<p>文件输出在当前工作目录下,<code>getwd()</code>可查看当前目录位置,<code>setwd()</code>设置工作目录.</p>
+<p>读取文件:</p>
+<blockquote>
+<p>data.table &lt;- read.table(&quot;myfile.txt&quot;,header=TRUE)</p>
+</blockquote>
+<p>从网络读取数据:</p>
+<blockquote>
+<p>data.table &lt;- read.table(file=&quot;<a href="http://www.statsci.org/data/general/waves.txt">http://www.statsci.org/data/general/waves.txt</a>&quot;, header=TRUE)<br>n &lt;- length(data.table$Waves)<br>time &lt;- (1:n)*0.15<br>plot (time, data.table    $Waves,type=&quot;o&quot;,pch=16,ylab=&quot;Force&quot;,xlab=&quot;Time(s)&quot;)    </p>
+</blockquote>
+<p>编辑数据,使用与vi类似:</p>
+<blockquote>
+<p>x &lt;- edit(data.table$Waves)</p>
+</blockquote>
+<p>退出<code>q()</code>:</p>
+<blockquote>
+<p>q()<br>Save workspace image? [y/n/c]: n</p>
+</blockquote>
+<h3>矩阵计算:</h3>
+<p>生成矩阵:</p>
+<blockquote>
+<p>i &lt;- 1:6<br>mat &lt;- matrix(i,nrow=2)<br>print (mat)<br>    [,1] [,2] [,3]<br>[1,]    1    3    5<br>[2,]    2    4    6    </p>
+</blockquote>
+<p>计算平均值:</p>
+<blockquote>
+<p>rowMeans(mat)<br>[1] 3 4<br>colMeans(mat)<br>[1] 1.5 3.5 5.5    </p>
+</blockquote>
+<p>apply(array,col/row,function)更为通用,1代表row,2代表column,可引用各种函数.</p>
+<p>和上例一样计算平均值:</p>
+<blockquote>
+<p>apply(mat,1,mean)<br>[1] 3 4<br>apply(mat,2,mean)<br>[1] 1.5 3.5 5.5    </p>
+</blockquote>
+<p>计算方差variance:</p>
+<blockquote>
+<p>apply(mat,1,var)<br>[1] 4 4<br>apply(mat,2,var)<br>[1] 0.5 0.5 0.5    </p>
+</blockquote>
+<p>添加元素:</p>
+<blockquote>
+<p>mat &lt;- rbind(mat,apply(mat,2,mean))<br>mat &lt;- cbind(mat,apply(mat,1,mean))<br>print(mat)
+    [,1] [,2] [,3] [,4]<br>[1,]  1.0  3.0  5.0  3.0<br>[2,]  2.0  4.0  6.0  4.0<br>[3,]  1.5  3.5  5.5  3.5    </p>
+</blockquote>
+<p>给各个行列命名:</p>
+<blockquote>
+<p>colnames(mat) &lt;- c(1:3,&quot;mean&quot;)<br>rownames(mat) &lt;- c(1:2,&quot;mean&quot;)<br>print (mat)<br>      1   2   3 mean<br>1    1.0 3.0 5.0  3.0<br>2    2.0 4.0 6.0  4.0<br>mean 1.5 3.5 5.5  3.5    </p>
+</blockquote>
+<p>length和dimension:</p>
+<blockquote>
+<p>length(mat)<br>[1] 12<br>dim(mat)<br>[1] 3 4    </p>
+</blockquote>
+<h3>运行R脚本:</h3>
+<blockquote>
+<p>source (&quot;myscript.R&quot;)    </p>
+</blockquote>
+<h3>画图:</h3>
+<blockquote>
+<p>x &lt;- seq(0,100)<br>y &lt;- cumsum(rnorm(length(x)))+50<br>plot(x,y,            #(x,y)<br>type=&quot;o&quot;,            #type of plot<br>pch=16,            #data symbol type<br>lty=3,            #line type<br>cex=0.5,            #expansion factor<br>xlim=c(0,100),    #x-axis limits<br>ylim=c(30,70),    #y-axis limits<br>xlab=&quot;Time&quot;,        #x-axis label<br>ylab=&quot;Value&quot;,        #y-axis label<br>bty=&quot;n&quot;,            #box type<br>log=&quot;xy&quot;,            #logarithm
+main=&quot;Title&quot;)        #title    </p>
+</blockquote>
+<p>在图上添加图形:</p>
+<blockquote>
+<p>points()         # add new data points;<br>lines()         # add lines through data;<br>abline()         # add a straight line;<br>text()         # add text to a graphic;<br>legend()         # add a legend.     </p>
+</blockquote>
+<p>举例:画直线</p>
+<blockquote>
+<p>abline(h=50,lty=2)    </p>
+</blockquote>
+<p>举例:画函数曲线</p>
+<blockquote>
+<p>y &lt;- 50+x-0.02*x^2<br>lines(x,y)    </p>
+</blockquote>
+<p>其他画图种类:</p>
+<blockquote>
+<p>pairs()           # produce a matrix of scatter plots;<br>coplot()         # produce a series of scatter plots separated by a third variable;<br>hist()         # histograms;<br>dotchart()     # dot charts;<br>image()         # intensity images;<br>contour()         # contour maps;<br>persp()         # projections of a surface.    </p>
+</blockquote>
+<p>输出图形到文件:</p>
+<blockquote>
+<p>jpeg(file=&quot;Routput.jpg&quot;,width=480,height=480)<br>plot(rnorm(50),type=&quot;l&quot;,ylab=&quot;y&quot;)<br>dev.off(dev.cur())    </p>
+</blockquote>
+<p>上面第一行初始化输出文件,第二行在文件中画图,第三行完成画图.<br>可以画各种格式pdf,png,jpeg,ps等,输入<code>?devie</code>查看类型.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/r/">R</a>, <a href="/tags/data-analysis/">data analysis</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:never.doubting.me">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/apache/">Apache</a><small>1</small></li>
+  
+    <li><a href="/tags/ispconfig/">ISPconfig</a><small>1</small></li>
+  
+    <li><a href="/tags/linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/nas/">NAS</a><small>1</small></li>
+  
+    <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
+  
+    <li><a href="/tags/php/">PHP</a><small>1</small></li>
+  
+    <li><a href="/tags/pt/">PT</a><small>1</small></li>
+  
+    <li><a href="/tags/quantum-field-theory/">Quantum Field Theory</a><small>1</small></li>
+  
+    <li><a href="/tags/r/">R</a><small>2</small></li>
+  
+    <li><a href="/tags/vps/">VPS</a><small>3</small></li>
+  
+    <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/data-analysis/">data analysis</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/github/">github</a><small>3</small></li>
+  
+    <li><a href="/tags/google/">google</a><small>1</small></li>
+  
+    <li><a href="/tags/habari/">habari</a><small>5</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/octopress/">octopress</a><small>3</small></li>
+  
+    <li><a href="/tags/ruby/">ruby</a><small>1</small></li>
+  
+    <li><a href="/tags/tex/">tex</a><small>1</small></li>
+  
+    <li><a href="/tags/transmission/">transmission</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'neverdoubtingme';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -82,6 +82,244 @@ MathJax.Hub.Queue(function() {
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-04-19T23:02:51.000Z"><a href="/2013/04/20/nginx-inverse-proxy-https-google/">Apr 20 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/20/nginx-inverse-proxy-https-google/">Nginx反向代理支持SSL协议的Google</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://never.doubting.me/fancybox/image/900913_logo.png" alt="900913.net"></p>
+<p>这儿以<code>https://guge.net</code>反向代理<code>https://encrypted.google.com</code>为例.</p>
+<p>证书储存在<code>/root/gugenet/</code>文件夹中.</p>
+<p>访问http衔接自动跳转到https链接.</p>
+<p>只需把下面的代码拷贝到nginx的配置文件中(一般为<code>nginx.conf</code>),再重启nginx就可.</p>
+<pre><code>server
+     {
+          listen       443;
+          server_name  guge.net;
+
+          ssl on;
+          ssl_certificate /root/gugenet/guge_net.crt;
+          ssl_certificate_key /root/gugenet/guge_net.pem;
+          ssl_protocols SSLv3 TLSv1;
+          ssl_ciphers ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
+
+          location / {
+
+          proxy_redirect off;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto https;
+          proxy_pass https://encrypted.google.com;
+          }
+
+     }
+
+server
+     {
+          listen       80;
+          server_name  guge.net;
+          rewrite ^(.*) https://guge.net/$1 permanent;
+     }
+
+server
+     {
+          listen       80;
+          server_name  www.guge.net;
+          rewrite ^(.*) https://guge.net/$1 permanent;
+     }</code></pre>
+<p> <strong><a href="https://900913.net">Demo</a></strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/20/nginx-inverse-proxy-https-google/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-18T19:06:00.000Z"><a href="/2013/04/18/2013-04-18-input-fomula-with-tex-in-octopress/">Apr 18 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/18/2013-04-18-input-fomula-with-tex-in-octopress/">在octopress中使用tex输入公式</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>方法很简单,让octopress调用mathjax.</p>
+<p>修改<code>source/_include/custom/head.html</code>文件,添加如下内容:</p>
+<pre><code class="lang-css">&lt;style TYPE=&quot;text/css&quot;&gt;
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+&lt;/style&gt;
+&lt;!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 --&gt;
+&lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]],
+        skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;] // removed &#39;code&#39; entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += &#39; has-jax&#39;;
+    }
+});
+&lt;/script&gt;
+
+&lt;script type=&#39;text/javascript&#39; src=&#39;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&#39;&gt;&lt;/script&gt;
+&lt;!-- CDN upload request sent in private mail to generated-toc author --&gt;</code></pre>
+<h2>测试:</h2>
+<pre><code>Google means $10^{100}$
+
+A Cross Product Formula
+
+$$
+\mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix}
+\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\\
+\frac{\partial X}{\partial u} &amp;  \frac{\partial Y}{\partial u} &amp; 0 \\\
+\frac{\partial X}{\partial v} &amp;  \frac{\partial Y}{\partial v} &amp; 0
+\end{vmatrix}
+$$
+
+The probability of getting $k$ heads when flipping $n$ coins is
+
+$$
+P(E) = {n \choose k} p^k (1-p)^{ n-k}
+$$</code></pre>
+<p><strong>以下为效果</strong></p>
+<p>Google means $10^{100}$</p>
+<p>A Cross Product Formula</p>
+<p>$$
+\mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix}
+\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\
+\frac{\partial X}{\partial u} &amp;  \frac{\partial Y}{\partial u} &amp; 0 \\
+\frac{\partial X}{\partial v} &amp;  \frac{\partial Y}{\partial v} &amp; 0
+\end{vmatrix}
+$$</p>
+<p>The probability of getting $k$ heads when flipping $n$ coins is</p>
+<p>$$
+P(E) = {n \choose k} p^k (1-p)^{ n-k}
+$$</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/18/2013-04-18-input-fomula-with-tex-in-octopress/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-18T18:00:00.000Z"><a href="/2013/04/18/2013-04-18-set-multiply-accounts-on-github/">Apr 18 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/18/2013-04-18-set-multiply-accounts-on-github/">教程:github设置多账号</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2>问题</h2>
+<p>在guthub上拥有多个账号,怎样设置使得终端能同时支持多个账号.</p>
+<h2>解决思路</h2>
+<p>github通过秘钥来认证账号,因此我们通过配置ssh的<code>config</code>文件,建立多个条目,分别对应不同的秘钥.</p>
+<h2>步骤</h2>
+<p>现在的情况是之前已经有了一个github账号,且全部配置好了,<code>~/.ssh</code>文件夹下有<code>id_rsa</code>和<code>id_rsa.pub</code>这两个文件.</p>
+<blockquote>
+<p>关于怎样建立ssh认证请看此文:<a href="http://never.doubting.me/2013/04/github-set-up-ssh-keys/">教程: Github设置ssh连接</a></p>
+</blockquote>
+<p>现在新注册了一个账号,账号名字是<code>znithy</code>,并在这个账号下建立了名为<code>znithy.github.com</code>的repository.</p>
+<h3>1) 新建秘钥</h3>
+<p>因为github规定一组秘钥只能用于一个账号,因此我们为账号<code>znithy</code>新建一组秘钥:</p>
+<pre><code class="lang-bash">cd ~/.ssh
+ssh-keygen -t rsa -C &quot;znithy@mail.com&quot;</code></pre>
+<p>要求输入文件名时输入<code>id_rsa_znithy</code>.</p>
+<p>命令执行后得到<code>id_rsa_znithy</code>和<code>id_rsa_znithy.pub</code>两个文件.</p>
+<p>因为我们没有采用默认名字,因此需要告诉系统新建秘钥的名字:</p>
+<pre><code class="lang-bash">ssh-add ~/.ssh/id_rsa_znithy</code></pre>
+<p>把<code>id_rsa_znithy.pub</code>的内容添加到github的ssh keys中:<a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a></p>
+<h3>2) 建立config配置文件</h3>
+<p>在<code>~/.ssh</code>文件夹下添加名为<code>config</code>的文件,文件内容是:</p>
+<pre><code class="lang-bash">Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa
+
+
+Host znithy.github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa_znithy</code></pre>
+<p>下半部分的意思时以后ssh访问<code>znithy.github.com</code>(这名字任意取)时实际上实际上是用<code>id_rsa_znithy</code>这个秘钥访问<code>github.com</code>.因此对于znithy这个账号,我们把内容推送到github时要用<code>znithy.github.com</code>代替<code>github.com</code>.</p>
+<p>比如repository原本的ssh地址是:</p>
+<pre><code class="lang-bash">git@github.com:znithy/znithy.github.com.git</code></pre>
+<p>现在ssh上传时需要输入:</p>
+<pre><code class="lang-bash">git@znithy.github.com:znithy/znithy.github.com.git</code></pre>
+<p>这样配置就完成了,ssh上传时<code>@github.com</code>对应第一个账户,<code>@znithy.github.com</code>对应第二个名为<code>znithy</code>的账户.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/04/18/2013-04-18-set-multiply-accounts-on-github/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-04-18T02:03:00.000Z"><a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/">Apr 18 2013</a></time>
       
       
@@ -322,228 +560,6 @@ Liquid Exception: invalid byte sequence in UTF-8 in atom.xml
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-03-15T19:17:03.000Z"><a href="/2013/03/15/transmission-install-script-2.77/">Mar 15 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/03/15/transmission-install-script-2.77/">transmission一键安装包</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><img src="http://never.doubting.me/fancybox/image/transmission_2.77.png" alt="transmission web client"></p>
-<p>这篇文章讲怎样在自己的服务器或者VPS上安装Transmission网页版客户端.</p>
-<p>Transmission用于PT非常流行,以下脚本安装2.77版.</p>
-<h2>使用方法 (CentOS):</h2>
-<pre><code class="lang-bash">wget http://znithy.com/download/pthostloc_2.77.sh
-sh ./pthostloc_2.77.sh</code></pre>
-<blockquote>
-<p>默认登录地址:<code>http://ip:1911</code><br>默认用户名:<code>hostloc</code><br>默认密码:<code>znithy@hostloc.com</code><br>下载文件位置:<code>/home/transmission/Downloads/</code>        </p>
-</blockquote>
-<p><strong>请安装后修改用户名(rpc-username),密码(rpc-password),端口(rpc-port):</strong></p>
-<p>这些设置都在<code>/home/transmission/.config/transmission/settings.json</code>文件,
-修改前停止服务: </p>
-<pre><code class="lang-bash">service transmissiond stop</code></pre>
-<p>修改后重启服务: </p>
-<pre><code class="lang-bash">service transmissiond start</code></pre>
-<p>注意这脚本是给CentOS用的.</p>
-<p>对于Ubuntu,可以尝试把脚本里的<code>yum</code>改成<code>apt-get</code>.主要的几个组件都是编译安装的,应该没问题.</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2013/03/15/transmission-install-script-2.77/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2011-09-19T23:32:49.000Z"><a href="/2011/09/20/get-your-free-whmcs/">Sep 20 2011</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2011/09/20/get-your-free-whmcs/">免费获得正版WHMCS</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>WHMCS给hostgator和hostdime的用户提供免费正版授权.</p>
-<p>只有你有hostgator或者hostdime的IP的空间就可以免费用whmcs,如果你手里有这两家的空间那正巧,没有的话淘宝随便几块钱一个月的找家分销的.有了空间后按如下步骤操作.</p>
-<p>1) 解析你的域名到hostgator或者hostdime的空间的IP，</p>
-<p>2) 然后分别去对应的页面验证下就行了,会得到个授权许可.</p>
-<blockquote>
-<p><a href="http://www.whmcs.com/hostdime/">http://www.whmcs.com/hostdime/</a><br><a href="http://www.whmcs.com/hostgator/">http://www.whmcs.com/hostgator/</a></p>
-</blockquote>
-<p>3) 安装whmcs时需要填这个授权许可码</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2011/09/20/get-your-free-whmcs/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2011-08-27T22:29:56.000Z"><a href="/2011/08/28/set-up-openvz-with-vswap/">Aug 28 2011</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2011/08/28/set-up-openvz-with-vswap/">架建最新带VSwap的OpenVZ服务器</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>因为是新技术，就想测试下，按照PETER NILSSONS的文章和openvz wiki的资料试了下，暂时没遇到问题。
-这儿记录下安装过程，有兴趣的朋友也可玩下，安装没几步，很容易。</p>
-<h2>先介绍下VSwap</h2>
-<p>RHEL6(Redhat6, CentOS6, Fedora 12/13/14)系列系统新支持的内存管理技术，替代了原来的User beancounters。</p>
-<p>现在分成了physpages（最大内存）和swappages（最大swap）这两个参数，当最大内存达到后，内存就移入VSwap（替代了原来的burstRAM）,
-这个VSwap是内存模拟的swap，和普通的swap相比没有硬盘I/O操作，所以比XEN的Swap要快，但模拟swap本身这个过程会使机器变慢。
-当母鸡内存短缺后，VSwap会被移入真实的硬盘swap中。</p>
-<h2>安装步骤</h2>
-<p>注意到，这是RHEL6带的技术，所以母鸡不能是常用的CentOS 5，我以CentOS6.0为例:</p>
-<h3>1）设置yum源</h3>
-<pre><code class="lang-bash">cd /etc/yum.repos.d
-wget http://download.openvz.org/openvz.repo
-wget http://download.openvz.org/RPM-GPG-Key-OpenVZ
-rpm --import RPM-GPG-Key-OpenVZ</code></pre>
-<h3>2）修改 /etc/yum.repos.d/openvz.repo文件，这文件默认支持rhel5，我们把他改成支持rhel6.</h3>
-<pre><code class="lang-bash">vi /etc/yum.repos.d/openvz.repo</code></pre>
-<p>修改<code>[openvz-kernel-rhel5]</code>下的 <code>enabled = 0</code>, <code>[openvz-kernel-rhel6]</code>下的 <code>enabled = 1</code></p>
-<p><img src="http://never.doubting.me/fancybox/image/openvz01.png" alt="openvz.repo setting"></p>
-<p>改好后</p>
-<pre><code class="lang-bash">yum update</code></pre>
-<h3>3）安装openvz</h3>
-<pre><code class="lang-bash">yum install vzkernel</code></pre>
-<h3>4）修改 /etc/sysctl.conf文件</h3>
-<pre><code class="lang-bash">vi /etc/sysctl.conf</code></pre>
-<p>改成如下：</p>
-<pre><code># Kernel sysctl configuration file for Red Hat Linux    
-#
-# For binary values, 0 is disabled, 1 is enabled.  See sysctl(8) and
-# sysctl.conf(5) for more details.
-
-# Controls IP packet forwarding
-net.ipv4.ip_forward = 1
-net.ipv4.conf.all.rp_filter = 1
-net.ipv4.icmp_echo_ignore_broadcasts = 1
-net.ipv6.conf.default.forwarding = 1
-net.ipv6.conf.all.forwarding = 1
-
-#disable arp proxy
-net.ipv4.conf.default.proxy_arp = 0
-
-
-# Controls source route verification
-net.ipv4.conf.default.rp_filter = 1
-
-# Do not accept source routing
-net.ipv4.conf.default.accept_source_route = 0
-
-# Controls the System Request debugging functionality of the kernel
-kernel.sysrq = 1
-
-# Controls whether core dumps will append the PID to the core filename.
-# Useful for debugging multi-threaded applications.
-kernel.core_uses_pid = 1
-
-# Controls the use of TCP syncookies
-net.ipv4.tcp_syncookies = 1
-
-# Disable netfilter on bridges.
-net.bridge.bridge-nf-call-ip6tables = 0
-net.bridge.bridge-nf-call-iptables = 0
-net.bridge.bridge-nf-call-arptables = 0
-
-
-# We do not want all our interfaces to send redirects
-net.ipv4.conf.default.send_redirects = 1
-net.ipv4.conf.all.send_redirects = 0</code></pre>
-<p>应用设置：</p>
-<pre><code class="lang-bash">sysctl -p</code></pre>
-<h3>5）禁用SELINUX</h3>
-<pre><code>vi /etc/sysconfig/selinux</code></pre>
-<p>改参数：<code>SELINUX=disabled</code></p>
-<h3>6）重启主机：</h3>
-<pre><code>reboot</code></pre>
-<h3>7）安装OpenVZ管理面板</h3>
-<pre><code class="lang-bash">wget -O - http://ovz-web-panel.googlecode.com/svn/installer/ai.sh | sh</code></pre>
-<blockquote>
-<p>管理面板位于：<br><a href="http://你的ip:3000">http://你的ip:3000</a>  </p>
-<p>默认用户名/密码：<br>admin/admin    </p>
-</blockquote>
-<h3>8）建立小鸡</h3>
-<p>进入网页管理界面后大部分操作都在Physical Servers里进行。
-新建服务器，OS Templates里下载模板（点选下载会会自动后台下载，过一会而就好了），
-Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
-<p>这个就是建立VPS的界面，需要添ID，选择方案什么的，看看就知道了</p>
-<p><img src="http://never.doubting.me/fancybox/image/openvz02.png" alt="OpenVZ Panel"></p>
-<h3>9）SHELL下简单命令介绍（101是小鸡的ID</h3>
-<blockquote>
-<p>进入小鸡: vzctl enter 101<br>退出小鸡：exit<br>小鸡HOSTNAME: vzctl set 101 --hostname HOSTNAME --save<br>小鸡IP: vzctl set 101 --ipadd YourIP --save<br>小鸡DNS: vzctl set 101 --nameserver DNSIP --save<br>小鸡用户名/密码: vzctl set 101 --userpasswd USERNAME:PASSWORD<br>设置随母鸡自动开机: vzctl set 101 --onboot yes --save<br>开/关/重启小鸡: vzctl start/stop/restart 101<br>删除小鸡: vzctl destroy 101    </p>
-<p>更多的命令请看<a href="http://openvz.org/Main_Page">openvz wiki</a>或自行google。    </p>
-</blockquote>
-<p><em>最后这张是小鸡free -m的图，可以看到有了2G的SWAP区：</em></p>
-<p><img src="http://never.doubting.me/fancybox/image/openvz03.png" alt="openvz example"></p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2011/08/28/set-up-openvz-with-vswap/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
@@ -577,15 +593,23 @@ Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
   
     <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
   
+    <li><a href="/tags/nas/">NAS</a><small>1</small></li>
+  
     <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
   
     <li><a href="/tags/php/">PHP</a><small>1</small></li>
   
     <li><a href="/tags/pt/">PT</a><small>1</small></li>
   
+    <li><a href="/tags/quantum-field-theory/">Quantum Field Theory</a><small>1</small></li>
+  
+    <li><a href="/tags/r/">R</a><small>2</small></li>
+  
     <li><a href="/tags/vps/">VPS</a><small>3</small></li>
   
     <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/data-analysis/">data analysis</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>1</small></li>
   

@@ -82,6 +82,320 @@ MathJax.Hub.Queue(function() {
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-11-02T21:41:48.000Z"><a href="/2013/11/02/quantum-field-theory-video-lectures/">Nov 2 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/11/02/quantum-field-theory-video-lectures/">量子力学视频教程</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Quantum Field Theory Video Lectures:</p>
+<p>1) <strong><em>Anthony Zee</em></strong> from UCSB - <a href="http://www.asti.ac.za/lectures.php">Introduction to Quantum Field Theory</a></p>
+<p>2) <strong><em>David Tong</em></strong> from Cambridge - <a href="http://www.damtp.cam.ac.uk/user/dt281/qft.html">Quantum Field Theory I</a></p>
+<p>3) <strong><em>Konstantin Zarembo</em></strong> from Albanova - <a href="http://www.perimeterscholars.org/323.html">Quantum Field Theory I</a></p>
+<p>4) <strong><em>Francois David</em></strong> from CEA - <a href="http://www.perimeterscholars.org/325.html">Quantum Field Theory II</a></p>
+<p>5) <strong><em>Sidney Coleman</em></strong> from Harvard - <a href="https://www.physics.harvard.edu/events/videos/Phys253">Quantum Field Theory</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/11/02/quantum-field-theory-video-lectures/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-10-23T22:25:08.000Z"><a href="/2013/10/24/the-very-basic-of-r-programming-language/">Oct 24 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/10/24/the-very-basic-of-r-programming-language/">R数据分析 - R语言最最基础</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><code>Scientific Inference - Learning from data by Simon Vaughan</code>
+<code>Appendix A:  Getting started with statistical computation</code></p>
+<h3>运行R</h3>
+<p>在Terminal中输入<code>R</code>开始运行.<br>命令格式是<code>command(arguments)</code>,如果没有arguments,则留空.<br>注释使用<code>#</code>.</p>
+<p>赋予变量使用<code>&lt;-</code>:</p>
+<blockquote>
+<p>r &lt;- 200<br>pi*r^2<br>[1] 125663.7   </p>
+</blockquote>
+<p>R把数据看作向量和矩阵,因为上面的粒子标量,相当于1x1矩阵,因此输出时显示<code>[1]</code>.</p>
+<p><code>1:20</code>代表1,2,...,20的向量:</p>
+<blockquote>
+<p>x &lt;- 1:20<br>x<br>[1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20    </p>
+</blockquote>
+<p>求和,平均值和数目:</p>
+<blockquote>
+<p>sum(x)<br>[1] 210<br>mean(x)<br>[1] 10.5<br>var(x)<br>[1] 35    </p>
+</blockquote>
+<p>标量点乘向量:</p>
+<blockquote>
+<p>2*x<br>[1]  2  4  6  8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40</p>
+</blockquote>
+<p>画图,plot():</p>
+<blockquote>
+<p>y &lt;- (x-mean(x))^2<br>plot(x,y)<br>plot(x,y,type=&quot;l&quot;,xlab=&quot;This is X axis&quot;,ylab=&quot;This is y axis&quot;,main=&quot;Title&quot;,cex=2)</p>
+</blockquote>
+<p>查看历史记录,history():</p>
+<blockquote>
+<p>history()<br>pi r^2<br>x &lt;- 1:20<br>x<br>sum(x)<br>mean(x)<br>var(x)<br>2*x<br>y &lt;- (x-mean(x))^2<br>plot(x,y)<br>plot(x,y,type=&quot;l&quot;,xlab=&quot;This is X axis&quot;,ylab=&quot;This is y axis&quot;,main=&quot;Title&quot;,cex=2)<br>history()    </p>
+</blockquote>
+<h3>输入输出数据</h3>
+<p>输入两行数据并输出到文件<code>myfile.txt</code>:</p>
+<blockquote>
+<p>varX &lt;- c(1,2,3,4,5)<br>carY &lt;- c(5.2,5.6,6.3,3.6,1.2)<br>dat &lt;- data.frame(varX,varY)<br>write.table(dat, file=&quot;myfile.txt&quot;, row.names=FALSE)    </p>
+</blockquote>
+<p>文件输出在当前工作目录下,<code>getwd()</code>可查看当前目录位置,<code>setwd()</code>设置工作目录.</p>
+<p>读取文件:</p>
+<blockquote>
+<p>data.table &lt;- read.table(&quot;myfile.txt&quot;,header=TRUE)</p>
+</blockquote>
+<p>从网络读取数据:</p>
+<blockquote>
+<p>data.table &lt;- read.table(file=&quot;<a href="http://www.statsci.org/data/general/waves.txt">http://www.statsci.org/data/general/waves.txt</a>&quot;, header=TRUE)<br>n &lt;- length(data.table$Waves)<br>time &lt;- (1:n)*0.15<br>plot (time, data.table    $Waves,type=&quot;o&quot;,pch=16,ylab=&quot;Force&quot;,xlab=&quot;Time(s)&quot;)    </p>
+</blockquote>
+<p>编辑数据,使用与vi类似:</p>
+<blockquote>
+<p>x &lt;- edit(data.table$Waves)</p>
+</blockquote>
+<p>退出<code>q()</code>:</p>
+<blockquote>
+<p>q()<br>Save workspace image? [y/n/c]: n</p>
+</blockquote>
+<h3>矩阵计算:</h3>
+<p>生成矩阵:</p>
+<blockquote>
+<p>i &lt;- 1:6<br>mat &lt;- matrix(i,nrow=2)<br>print (mat)<br>    [,1] [,2] [,3]<br>[1,]    1    3    5<br>[2,]    2    4    6    </p>
+</blockquote>
+<p>计算平均值:</p>
+<blockquote>
+<p>rowMeans(mat)<br>[1] 3 4<br>colMeans(mat)<br>[1] 1.5 3.5 5.5    </p>
+</blockquote>
+<p>apply(array,col/row,function)更为通用,1代表row,2代表column,可引用各种函数.</p>
+<p>和上例一样计算平均值:</p>
+<blockquote>
+<p>apply(mat,1,mean)<br>[1] 3 4<br>apply(mat,2,mean)<br>[1] 1.5 3.5 5.5    </p>
+</blockquote>
+<p>计算方差variance:</p>
+<blockquote>
+<p>apply(mat,1,var)<br>[1] 4 4<br>apply(mat,2,var)<br>[1] 0.5 0.5 0.5    </p>
+</blockquote>
+<p>添加元素:</p>
+<blockquote>
+<p>mat &lt;- rbind(mat,apply(mat,2,mean))<br>mat &lt;- cbind(mat,apply(mat,1,mean))<br>print(mat)
+    [,1] [,2] [,3] [,4]<br>[1,]  1.0  3.0  5.0  3.0<br>[2,]  2.0  4.0  6.0  4.0<br>[3,]  1.5  3.5  5.5  3.5    </p>
+</blockquote>
+<p>给各个行列命名:</p>
+<blockquote>
+<p>colnames(mat) &lt;- c(1:3,&quot;mean&quot;)<br>rownames(mat) &lt;- c(1:2,&quot;mean&quot;)<br>print (mat)<br>      1   2   3 mean<br>1    1.0 3.0 5.0  3.0<br>2    2.0 4.0 6.0  4.0<br>mean 1.5 3.5 5.5  3.5    </p>
+</blockquote>
+<p>length和dimension:</p>
+<blockquote>
+<p>length(mat)<br>[1] 12<br>dim(mat)<br>[1] 3 4    </p>
+</blockquote>
+<h3>运行R脚本:</h3>
+<blockquote>
+<p>source (&quot;myscript.R&quot;)    </p>
+</blockquote>
+<h3>画图:</h3>
+<blockquote>
+<p>x &lt;- seq(0,100)<br>y &lt;- cumsum(rnorm(length(x)))+50<br>plot(x,y,            #(x,y)<br>type=&quot;o&quot;,            #type of plot<br>pch=16,            #data symbol type<br>lty=3,            #line type<br>cex=0.5,            #expansion factor<br>xlim=c(0,100),    #x-axis limits<br>ylim=c(30,70),    #y-axis limits<br>xlab=&quot;Time&quot;,        #x-axis label<br>ylab=&quot;Value&quot;,        #y-axis label<br>bty=&quot;n&quot;,            #box type<br>log=&quot;xy&quot;,            #logarithm
+main=&quot;Title&quot;)        #title    </p>
+</blockquote>
+<p>在图上添加图形:</p>
+<blockquote>
+<p>points()         # add new data points;<br>lines()         # add lines through data;<br>abline()         # add a straight line;<br>text()         # add text to a graphic;<br>legend()         # add a legend.     </p>
+</blockquote>
+<p>举例:画直线</p>
+<blockquote>
+<p>abline(h=50,lty=2)    </p>
+</blockquote>
+<p>举例:画函数曲线</p>
+<blockquote>
+<p>y &lt;- 50+x-0.02*x^2<br>lines(x,y)    </p>
+</blockquote>
+<p>其他画图种类:</p>
+<blockquote>
+<p>pairs()           # produce a matrix of scatter plots;<br>coplot()         # produce a series of scatter plots separated by a third variable;<br>hist()         # histograms;<br>dotchart()     # dot charts;<br>image()         # intensity images;<br>contour()         # contour maps;<br>persp()         # projections of a surface.    </p>
+</blockquote>
+<p>输出图形到文件:</p>
+<blockquote>
+<p>jpeg(file=&quot;Routput.jpg&quot;,width=480,height=480)<br>plot(rnorm(50),type=&quot;l&quot;,ylab=&quot;y&quot;)<br>dev.off(dev.cur())    </p>
+</blockquote>
+<p>上面第一行初始化输出文件,第二行在文件中画图,第三行完成画图.<br>可以画各种格式pdf,png,jpeg,ps等,输入<code>?devie</code>查看类型.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/10/24/the-very-basic-of-r-programming-language/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-10-23T20:01:38.000Z"><a href="/2013/10/23/r---statistical-summaries-of-data/">Oct 23 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/10/23/r---statistical-summaries-of-data/">R数据分析 - 统计基础</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><code>Scientific Inference - Learning from data by Simon Vaughan</code>
+<code>Chapter 2:  Statistical summaries of data</code></p>
+<h3>典型的统计作图</h3>
+<h4>Histograms</h4>
+<p>数据morley为R语言内置,直接可以使用,输入morley可查看.</p>
+<blockquote>
+<p>hist(morley$Speed,breaks=50)</p>
+<p>hist(morley$Speed,breaks=50,col=&quot;darkgray&quot;,main=&quot;&quot;,xlab=&quot;Speed - 299000 (km/s)&quot;)</p>
+</blockquote>
+<h4>Bar Chart</h4>
+<p>设置工作文件夹:</p>
+<blockquote>
+<p>setwd(&quot;~/Documents/R/&quot;)</p>
+</blockquote>
+<p>读取数据:</p>
+<blockquote>
+<p>rutherford &lt;- read.table(&quot;rutherford.dat&quot;)<br>rutherford<br>  V1  V2<br>1   0  57<br>2   1 203<br>3   2 383<br>4   3 525<br>5   4 532<br>6   5 408<br>7   6 273<br>8   7 139<br>9   8  45<br>10  9  27<br>11 10  10<br>12 11   4<br>13 12   0<br>14 13   1<br>15 14   1<br>rate &lt;- rutherford$V1<br>freq &lt;- rutherford$V2       </p>
+</blockquote>
+<p>画图:</p>
+<blockquote>
+<p>plot (rate,freq,type=&quot;h&quot;,xlab=&quot;Rate(counts/interval)&quot;,ylab=&quot;Frequency&quot;,lwd=5)</p>
+</blockquote>
+<p>或者</p>
+<blockquote>
+<p>barplot(freq,names.arg=rate,,xlab=&quot;Rate(counts/interval)&quot;,ylab=&quot;Frequency&quot;,space=0.5)</p>
+</blockquote>
+<h3>Mean, Median, Mode</h3>
+<p>Mean: 平均值 (和处于个数)
+Median: 中间值 (比中间值大的数据个数等于比中间值小的数据个数)
+Mode: 对应极值的坐标</p>
+<blockquote>
+<p>mean(freq)<br>[1] 173.8667<br>median(freq)<br>[1] 57    </p>
+</blockquote>
+<p>mode没有特定的函数计算.</p>
+<h3>方差 Variance</h3>
+<p>方差:</p>
+<p>$$
+s_x^2=\frac{1}{n-1}\underset{i=1}{\overset{n}{\Sigma }}\left(x_i-\overset{-}{x}\right){}^2
+$$</p>
+<p>方差(variance)的算术平方根是标准方差(standard deviation)</p>
+<blockquote>
+<p>var(freq)<br>[1] 39966.98<br>sd(freq)<br>[1] 199.9174    </p>
+</blockquote>
+<h3>Five Numbers</h3>
+<p>Min(0%),25%,Median(50%),75%,Max(100%).</p>
+<blockquote>
+<p>fivenum(rate)<br>[1]  0.0  3.5  7.0 10.5 14.0    </p>
+</blockquote>
+<h3>标准误差 (standard error)</h3>
+<p>$$
+\text{SE}_{\overset{-}{x}}=\sqrt{\frac{s_x^2}{n}}
+$$</p>
+<p>以moley实验为例,计算所有数据的速度平均值和标准误差.</p>
+<blockquote>
+<p>x &lt;- morley$Speed<br>mean(x)<br>[1] 852.4<br>var(x)<br>[1] 6242.667<br>sqrt(var(x)/length(x))<br>[1] 7.901055    </p>
+</blockquote>
+<p>moley实验可以分为5组实验,分别计算每组数据的平均值和标准误差.</p>
+<p>分割数据,20个数据为一组(所以nrow=20)</p>
+<blockquote>
+<p>speed &lt;- matrix(morley$Speed,nrow=20)</p>
+</blockquote>
+<p>计算平均值和误差,apply(数据,行/列,函数),2代表列.</p>
+<blockquote>
+<p>speed.mean &lt;- apply(speed,2,mean)<br>speed.var &lt;- apply(speed,2,var)<br> speed.n &lt;- apply(speed,2,length)<br>se &lt;- sqrt(speed.var/speed.n)<br>se<br>[1] 23.46218 13.67672 17.68883 13.42572 12.12381     </p>
+</blockquote>
+<p>把结果放在data frame里,此数据结构类似matrix,但可以混合存放不同类型的数据.</p>
+<blockquote>
+<p>data.frame(speed.mean,speed.var,speed.n,se)<br> speed.mean speed.var speed.n       se<br>1      909.0 11009.474      20 23.46218<br>2      856.0  3741.053      20 13.67672<br>3      845.0  6257.895      20 17.68883<br>4      820.5  3605.000      20 13.42572<br>5      831.5  2939.737      20 12.12381    </p>
+</blockquote>
+<p>画包含误差棒的图:</p>
+<blockquote>
+<p>Expt &lt;- 1:length(speed.mean)<br>plot(Expt,speed.mean,ylim=c(780,950),pch=16,bty=&quot;l&quot;,xlab=&quot;Experiment&quot;,ylab=&quot;Speed - 299,000(km/s)&quot;)<br>segments(Expt,speed.mean-se,Expt,speed.mean+se)<br>arrows(Expt,speed.mean-se,Expt,speed.mean+se,code=3,angle=90,length=0.1)   </p>
+</blockquote>
+<p>第一行实验序号,第二行画平均值,第三行画误差棒,使用了segments(x0,y0,x1,y1)函数画线段,第四行用arrows()函数画箭头.</p>
+<h3>协方差(covariance)和相关性(correlation)</h3>
+<p>对于二维数据(x,y),如果两者有关联的话可以计算协方差(covariance):</p>
+<p>$$
+s_{\text{xy}}=\frac{1}{n-1}\underset{i=1}{\overset{n}{\Sigma }}\left(x_i-\overset{-}{x}\right)\left(y_i-\overset{-}{y}\right)
+$$</p>
+<p>从上面的定义可以看到,把y改成x就是平常的方差形式.</p>
+<p>相关性(correlation coefficient):
+$$
+r=\frac{s_{\text{xy}}}{s_x s_y}\frac{1}{n-1}\underset{i=1}{\overset{n}{\Sigma }}\left(\frac{x_i-\overset{-}{x}}{s_x}\right)\left(\frac{y_i-\overset{-}{y}}{s_y}\right)
+$$</p>
+<p>如果相关性强,r趋向1.</p>
+<p>注意相关性并不代表一定有因果关系(causation),比如(你的白头发,英国的手机量)两者相关,随时间而增加,但不代表白头发和手机量有因果关系.</p>
+<blockquote>
+<p>cor(speed.mean,speed.var)<br>[1] 0.9058616<br>cor.test(speed.mean,speed.var)    </p>
+<p>   Pearson&#39;s product-moment correlation    </p>
+<p>data:  speed.mean and speed.var<br>t = 3.7042, df = 3, p-value = 0.03418<br>alternative hypothesis: true correlation is not equal to 0<br>95 percent confidence interval:<br>0.1175123 0.9938399<br>sample estimates:<br>     cor<br>0.9058616</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2013/10/23/r---statistical-summaries-of-data/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-10-22T16:21:26.000Z"><a href="/2013/10/22/ios-xuanyuanjian-maple-leaf-fall-coin-cheat/">Oct 22 2013</a></time>
       
       
@@ -153,244 +467,6 @@ MathJax.Hub.Queue(function() {
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-04-19T23:02:51.000Z"><a href="/2013/04/20/nginx-inverse-proxy-https-google/">Apr 20 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/04/20/nginx-inverse-proxy-https-google/">Nginx反向代理支持SSL协议的Google</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><img src="http://never.doubting.me/fancybox/image/900913_logo.png" alt="900913.net"></p>
-<p>这儿以<code>https://guge.net</code>反向代理<code>https://encrypted.google.com</code>为例.</p>
-<p>证书储存在<code>/root/gugenet/</code>文件夹中.</p>
-<p>访问http衔接自动跳转到https链接.</p>
-<p>只需把下面的代码拷贝到nginx的配置文件中(一般为<code>nginx.conf</code>),再重启nginx就可.</p>
-<pre><code>server
-     {
-          listen       443;
-          server_name  guge.net;
-
-          ssl on;
-          ssl_certificate /root/gugenet/guge_net.crt;
-          ssl_certificate_key /root/gugenet/guge_net.pem;
-          ssl_protocols SSLv3 TLSv1;
-          ssl_ciphers ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
-
-          location / {
-
-          proxy_redirect off;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto https;
-          proxy_pass https://encrypted.google.com;
-          }
-
-     }
-
-server
-     {
-          listen       80;
-          server_name  guge.net;
-          rewrite ^(.*) https://guge.net/$1 permanent;
-     }
-
-server
-     {
-          listen       80;
-          server_name  www.guge.net;
-          rewrite ^(.*) https://guge.net/$1 permanent;
-     }</code></pre>
-<p> <strong><a href="https://900913.net">Demo</a></strong></p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2013/04/20/nginx-inverse-proxy-https-google/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-04-18T19:06:00.000Z"><a href="/2013/04/18/2013-04-18-input-fomula-with-tex-in-octopress/">Apr 18 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/04/18/2013-04-18-input-fomula-with-tex-in-octopress/">在octopress中使用tex输入公式</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>方法很简单,让octopress调用mathjax.</p>
-<p>修改<code>source/_include/custom/head.html</code>文件,添加如下内容:</p>
-<pre><code class="lang-css">&lt;style TYPE=&quot;text/css&quot;&gt;
-code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
-&lt;/style&gt;
-&lt;!-- RFE: for easier MathJax install https://github.com/mathjax/MathJax/issues/339 --&gt;
-&lt;script type=&quot;text/x-mathjax-config&quot;&gt;
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]],
-        skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;] // removed &#39;code&#39; entry
-    }
-});
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i = 0; i &lt; all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += &#39; has-jax&#39;;
-    }
-});
-&lt;/script&gt;
-
-&lt;script type=&#39;text/javascript&#39; src=&#39;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&#39;&gt;&lt;/script&gt;
-&lt;!-- CDN upload request sent in private mail to generated-toc author --&gt;</code></pre>
-<h2>测试:</h2>
-<pre><code>Google means $10^{100}$
-
-A Cross Product Formula
-
-$$
-\mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix}
-\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\\
-\frac{\partial X}{\partial u} &amp;  \frac{\partial Y}{\partial u} &amp; 0 \\\
-\frac{\partial X}{\partial v} &amp;  \frac{\partial Y}{\partial v} &amp; 0
-\end{vmatrix}
-$$
-
-The probability of getting $k$ heads when flipping $n$ coins is
-
-$$
-P(E) = {n \choose k} p^k (1-p)^{ n-k}
-$$</code></pre>
-<p><strong>以下为效果</strong></p>
-<p>Google means $10^{100}$</p>
-<p>A Cross Product Formula</p>
-<p>$$
-\mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix}
-\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\
-\frac{\partial X}{\partial u} &amp;  \frac{\partial Y}{\partial u} &amp; 0 \\
-\frac{\partial X}{\partial v} &amp;  \frac{\partial Y}{\partial v} &amp; 0
-\end{vmatrix}
-$$</p>
-<p>The probability of getting $k$ heads when flipping $n$ coins is</p>
-<p>$$
-P(E) = {n \choose k} p^k (1-p)^{ n-k}
-$$</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2013/04/18/2013-04-18-input-fomula-with-tex-in-octopress/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-04-18T18:00:00.000Z"><a href="/2013/04/18/2013-04-18-set-multiply-accounts-on-github/">Apr 18 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/04/18/2013-04-18-set-multiply-accounts-on-github/">教程:github设置多账号</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2>问题</h2>
-<p>在guthub上拥有多个账号,怎样设置使得终端能同时支持多个账号.</p>
-<h2>解决思路</h2>
-<p>github通过秘钥来认证账号,因此我们通过配置ssh的<code>config</code>文件,建立多个条目,分别对应不同的秘钥.</p>
-<h2>步骤</h2>
-<p>现在的情况是之前已经有了一个github账号,且全部配置好了,<code>~/.ssh</code>文件夹下有<code>id_rsa</code>和<code>id_rsa.pub</code>这两个文件.</p>
-<blockquote>
-<p>关于怎样建立ssh认证请看此文:<a href="http://never.doubting.me/2013/04/github-set-up-ssh-keys/">教程: Github设置ssh连接</a></p>
-</blockquote>
-<p>现在新注册了一个账号,账号名字是<code>znithy</code>,并在这个账号下建立了名为<code>znithy.github.com</code>的repository.</p>
-<h3>1) 新建秘钥</h3>
-<p>因为github规定一组秘钥只能用于一个账号,因此我们为账号<code>znithy</code>新建一组秘钥:</p>
-<pre><code class="lang-bash">cd ~/.ssh
-ssh-keygen -t rsa -C &quot;znithy@mail.com&quot;</code></pre>
-<p>要求输入文件名时输入<code>id_rsa_znithy</code>.</p>
-<p>命令执行后得到<code>id_rsa_znithy</code>和<code>id_rsa_znithy.pub</code>两个文件.</p>
-<p>因为我们没有采用默认名字,因此需要告诉系统新建秘钥的名字:</p>
-<pre><code class="lang-bash">ssh-add ~/.ssh/id_rsa_znithy</code></pre>
-<p>把<code>id_rsa_znithy.pub</code>的内容添加到github的ssh keys中:<a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a></p>
-<h3>2) 建立config配置文件</h3>
-<p>在<code>~/.ssh</code>文件夹下添加名为<code>config</code>的文件,文件内容是:</p>
-<pre><code class="lang-bash">Host github.com
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_rsa
-
-
-Host znithy.github.com
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_rsa_znithy</code></pre>
-<p>下半部分的意思时以后ssh访问<code>znithy.github.com</code>(这名字任意取)时实际上实际上是用<code>id_rsa_znithy</code>这个秘钥访问<code>github.com</code>.因此对于znithy这个账号,我们把内容推送到github时要用<code>znithy.github.com</code>代替<code>github.com</code>.</p>
-<p>比如repository原本的ssh地址是:</p>
-<pre><code class="lang-bash">git@github.com:znithy/znithy.github.com.git</code></pre>
-<p>现在ssh上传时需要输入:</p>
-<pre><code class="lang-bash">git@znithy.github.com:znithy/znithy.github.com.git</code></pre>
-<p>这样配置就完成了,ssh上传时<code>@github.com</code>对应第一个账户,<code>@znithy.github.com</code>对应第二个名为<code>znithy</code>的账户.</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2013/04/18/2013-04-18-set-multiply-accounts-on-github/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
@@ -422,15 +498,23 @@ Host znithy.github.com
   
     <li><a href="/tags/mysql/">MySQL</a><small>1</small></li>
   
+    <li><a href="/tags/nas/">NAS</a><small>1</small></li>
+  
     <li><a href="/tags/openvz/">OpenVZ</a><small>1</small></li>
   
     <li><a href="/tags/php/">PHP</a><small>1</small></li>
   
     <li><a href="/tags/pt/">PT</a><small>1</small></li>
   
+    <li><a href="/tags/quantum-field-theory/">Quantum Field Theory</a><small>1</small></li>
+  
+    <li><a href="/tags/r/">R</a><small>2</small></li>
+  
     <li><a href="/tags/vps/">VPS</a><small>3</small></li>
   
     <li><a href="/tags/whmcs/">WHMCS</a><small>1</small></li>
+  
+    <li><a href="/tags/data-analysis/">data analysis</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>1</small></li>
   
