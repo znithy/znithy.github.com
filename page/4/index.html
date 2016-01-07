@@ -82,6 +82,166 @@ MathJax.Hub.Queue(function() {
     <header>
       
         <div class="icon"></div>
+        <time datetime="2011-07-18T20:40:35.000Z"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">Jul 18 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">LAMP+ISPconfig控制面板的一键安装包-LAMPI</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://never.doubting.me/fancybox/image/LAMPI.PNG" alt="LAMPI Control Panel"></p>
+<p>ISPconfig这个面板一直在保持更新，界面也简洁。但安装过程比较繁琐，因此我在borgo07年写的lamp半自动安装脚本基础上做了修改. 更新了软件，自动修改配置文件，汉化了安装界面，加入了ISPconfig面板，对dovecot的启动错误进行了修复。</p>
+<p><strong>这是CentOS版。</strong></p>
+<h2>包含的软件</h2>
+<blockquote>
+<p>BIND9 (chrooted)<br>Apache with SSL support<br>PHP<br>Python<br>MySQL<br>proftpd<br>postfix<br>dovecot<br>Webalizer<br>ISPconfig    </p>
+</blockquote>
+<h2>安装方法</h2>
+<p>1)首先请设置你的ssh软件支持UTF8编码，要不然可能会出现乱码。</p>
+<p>2)下载一键安装脚本:</p>
+<pre><code class="lang-bash">wget http://znithy.com/download/lampi.sh</code></pre>
+<p>用文本编辑器打开lampi.sh，自定义mySQL密码和其他一些参数。
+(在文件头部，打开后一下就能看到了，当然你也可以不修改，采取默认设置。)</p>
+<p>3)上传lampi.sh和proftpd文件。</p>
+<p>4)修改权限并运行脚本</p>
+<pre><code class="lang-bash">  chmod 777 lampi.sh
+  ./lampi.sh</code></pre>
+<p>5)按中文提示操作即可。但在安装ISPconfig时提示是英文的，需要输入sql密码，你的地址，邮箱之类的信息。</p>
+<p>6)完成安装</p>
+<blockquote>
+<p>默认mySQL用户名root,密码123456</p>
+<p>面板地址:<br><a href="http://ip:8080">http://ip:8080</a><br>用户名admin，密码admin。    </p>
+</blockquote>
+<h2>官方演示地址</h2>
+<blockquote>
+<p><a href="http://demo3.ispconfig.org/">http://demo3.ispconfig.org/</a></p>
+<p>管理员面板<br>用户名: admin<br>密码: demo    </p>
+<p>Reseller面板<br>用户名: reseller<br>密码: demo    </p>
+<p>客户面板<br>用户名: client<br>密码: demo    </p>
+</blockquote>
+<h2>其他</h2>
+<p>没优化的情况下重启后的初始内存消耗略小于200MB，其中DNS和邮件服务占了85MB.</p>
+<p>中文语言包网上有，请google。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/07/18/lamp-ispconfig-install-script-lampi/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-07-06T22:52:12.000Z"><a href="/2011/07/07/optimize-tiny-vps-memory/">Jul 7 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/07/07/optimize-tiny-vps-memory/">小内存VPS优化</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>适用256MB内存以下的VPS.</p>
+<p>文件位置可以使用<code>find / -name filename</code>查找.</p>
+<h2>MySQL优化</h2>
+<p>编辑/etc/my.cnf (以下为全文件内容)</p>
+<pre><code>[mysqld]
+port      = 3306
+socket    = /tmp/mysql.sock
+key_buffer = 16K
+max_allowed_packet = 1M
+table_cache = 4
+sort_buffer_size = 64K
+read_buffer_size = 256K
+read_rnd_buffer_size = 256K
+net_buffer_length = 2K
+thread_stack = 64K
+loose-skip-innodb
+skip-external-locking
+
+[mysqldump]
+quick
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+
+[isamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[myisamchk]
+key_buffer = 8M
+sort_buffer_size = 8M
+
+[mysqlhotcopy]
+interactive-timeout</code></pre>
+<h2>nginx优化</h2>
+<p>编辑<code>nginx.conf</code></p>
+<pre><code>worker_processes 1; # 只使用1个进程
+worker_connections  1024; #减少连接数</code></pre>
+<p>把下面这行添加到 <code>/etc/security/limits.conf</code>,限制nginx用户组使用512k大小的堆栈:</p>
+<pre><code>nginx        hard    stack            512</code></pre>
+<h2>Apache优化</h2>
+<p>编辑<code>httpd-mpm.conf</code></p>
+<pre><code>&lt;IfModule mpm_prefork_module&gt;
+    StartServers           1
+    MinSpareServers       2
+    MaxSpareServers       2
+    MaxClients            3
+    MaxRequestsPerChild   50
+&lt;/IfModule&gt;</code></pre>
+<h2>PHP优化</h2>
+<p>编辑<code>php.ini</code></p>
+<pre><code>max_execution_time = 90     ; Maximum execution time of each script, in seconds
+max_input_time = 60     ; Maximum amount of time each script may spend parsing r
+equest data
+;max_input_nesting_level = 64 ; Maximum input variable nesting level
+memory_limit = 32M      ; Maximum amount of memory a script may consume (128MB)</code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/07/07/optimize-tiny-vps-memory/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2010-02-19T01:36:21.000Z"><a href="/2010/02/19/how-to-display-recent-comments-in-habari/">Feb 19 2010</a></time>
       
       
@@ -272,132 +432,13 @@ src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/images/feed.png&quot; /&gt;&l
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2010-02-18T01:22:07.000Z"><a href="/2010/02/18/using-jquery-to-display-images-in-habari/">Feb 18 2010</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2010/02/18/using-jquery-to-display-images-in-habari/">Habari中使用jQuery来预览图片</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>wordpress中使用jQuery来预览图片的插件很多,特别是lightbox,相信很多人都用过.</p>
-<p>这儿介绍下怎样在Habari中使用这项功能.这儿以ThickBox和ShadowBox这两个通用插件为例.并且只实现最简单的图片预览功能.</p>
-<h2>ThickBox</h2>
-<p>1)下载ThickBox,<a href="http://jquery.com/demo/thickbox/">点击进入官网</a>.我们这主要使用(<code>thickbox-compressed.js</code> , <code>thickbox.css</code> ,<code>jQuery.js</code>)这三个文件.</p>
-<p>2)在网页模板的目录下建立<code>thickbox</code>文件夹,上传这三个文件和附带一些图片文件进此文件夹.</p>
-<p>3)修改模板的文件<code>header.php</code>,一般此文件头部<code>&lt;head&gt;</code>和<code>&lt;/head&gt;</code>间都会有<code>&lt;link rel=&quot;stylesheet&quot; ...&gt;</code> 这样的代码,我们要加入的代码和这类似,所以也写在这地方,内容是:</p>
-<pre><code class="lang-html">&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/jquery.js&quot;&gt;&lt;/script&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/thickbox-compressed.js&quot;&gt;&lt;/script&gt;
-
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/thickbox/thickbox.css&quot; type=&quot;text/css&quot; media=&quot;screen&quot; /&gt;</code></pre>
-<p>4)完成工作了,以后只要在图片的链接代码里加上<code>class=&quot;thickbox&quot;</code>就可以了.比如:</p>
-<pre><code class="lang-html">&lt;a title=&quot;图片的标题&quot; class=&quot;thickbox&quot; href=&quot;链接的图片地址&quot; &gt;&lt; img src=&quot;显示的图片地址&quot; /&gt;&lt;/a&gt;</code></pre>
-<h2>Shadow Box</h2>
-<p>ShadowBox与ThickBox类似</p>
-<p>1)下载shadowbox,<a href="http://www.shadowbox-js.com/index.html">点击进入官网</a>.我们这主要使用(<code>shadowbox.css</code> , <code>shadowbox.js</code>)两个文件.</p>
-<p>2)在网页模板的目录下建立<code>shadowbox</code>文件夹,上传这两个文件和附带一些图片文件进此文件夹.</p>
-<p>3)修改模板的文件<code>header.php</code>,一般此文件头部<code>&lt;head&gt;</code>和<code>&lt;/head&gt;</code>间都会有<code>&lt;link rel=&quot;stylesheet&quot; ...&gt;</code>这样的代码,我们要加入的代码和这类似,所以也写在这地方,内容是:</p>
-<pre><code class="lang-html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/shadowbox/shadowbox.css&quot;&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;theme_url; ?&gt;/shadowbox/shadowbox.js&quot;&gt;&lt;/script&gt;
-
-&lt;script type=&quot;text/javascript&quot;&gt;
-
-Shadowbox.init();
-
-&lt;/script&gt;</code></pre>
-<p>4)完成工作了,以后只要在图片的链接代码里加上<code>rel=&quot;shadowbox&quot;</code>就可以了.比如:</p>
-<pre><code class="lang-html">&lt;a title=&quot;图片的标题&quot; rel=&quot;shadowbox&quot; href=&quot;链接的图片地址&quot; &gt;&lt; img src=&quot;显示的图片地址&quot; /&gt;&lt;/a&gt;</code></pre>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2010/02/18/using-jquery-to-display-images-in-habari/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2010-02-18T01:16:09.000Z"><a href="/2010/02/18/plugins-and-themes-of-habari/">Feb 18 2010</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2010/02/18/plugins-and-themes-of-habari/">Habari的插件和主题</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2>怎样安装主题和插件</h2>
-<p>Habari的主题和插件安装在两个地方,系统自带的在<code>system</code>目录下的<code>plugins</code>和<code>themes</code>.用户安装的在<code>user</code>目录下的<code>plugins</code>和<code>themes</code>文件夹.</p>
-<p>一般只要把想要安装的插件或主题上传到<code>user</code>中对应的文件夹后再进后台选择使用就可.</p>
-<h2>在哪儿下载插件和主题:</h2>
-<h4>Habari维基上资源,有下载链接,并且有简介,但不全:</h4>
-<blockquote>
-<p><strong>主题</strong>: <a href="http://wiki.habariproject.org/en/Available_Themes">http://wiki.habariproject.org/en/Available_Themes</a></p>
-<p><strong>插件</strong>: <a href="http://wiki.habariproject.org/en/Available_Plugins">http://wiki.habariproject.org/en/Available_Plugins</a></p>
-</blockquote>
-<h4>SVN上的资源,为最新版本:</h4>
-<p>可以通过在命令行中输入&quot;svn co 链接地址&quot;下载.</p>
-<blockquote>
-<p><strong>主题</strong>: <a href="http://svn.habariproject.org/habari-extras/themes/">http://svn.habariproject.org/habari-extras/themes/</a></p>
-<p><strong>插件</strong>: <a href="http://svn.habariproject.org/habari-extras/plugins/">http://svn.habariproject.org/habari-extras/plugins/</a></p>
-</blockquote>
-<h4>压缩包下载:</h4>
-<blockquote>
-<p><strong>主题</strong>: <a href="http://habariproject.org/dist/themes/">http://habariproject.org/dist/themes/</a></p>
-<p><strong>插件</strong>: <a href="http://habariproject.org/dist/plugins/">http://habariproject.org/dist/plugins/</a></p>
-</blockquote>
-<h2>遇到问题去哪儿问:</h2>
-<p>官方的解答问题平台,建议先搜索: <a href="https://trac.habariproject.org/habari">https://trac.habariproject.org/habari</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2010/02/18/plugins-and-themes-of-habari/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
     <a href="/page/3/" class="alignleft prev">Prev</a>
   
+  
+    <a href="/page/5/" class="alignright next">Next</a>
   
   <div class="clearfix"></div>
 </nav></div></div>
@@ -471,7 +512,7 @@ Shadowbox.init();
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2013   znithy's  Never Doubting Me. All Rights Reserved.
+  &copy; 2016   znithy's  Never Doubting Me. All Rights Reserved.
   
 </div>
 <div class="clearfix"></div></footer>
