@@ -86,19 +86,19 @@ MathJax.Hub.Queue(function() {
       
       
   
-    <h1 class="title"><a href="/2016/01/07/3ds-bravely-second/">3DS Bravely Second 勇气默示录2存档修改月球人数</a></h1>
+    <h1 class="title"><a href="/2016/01/07/3ds-bravely-second/">3DS Bravely Second 勇气默示录2 存档修改月球人数</a></h1>
   
 
     </header>
     <div class="entry">
       
-        <ol>
-<li>3DS中打开<code>SaveDataFiler</code>，找到<code>User</code>中的<code>0DC8</code>，导出。</li>
-<li>储存卡插入电脑，找到位于<code>FILER\UserSaveData</code>下找到<code>BD2COLONY0.sav</code>，用16进制编辑器打开。</li>
-<li>修改<code>OFFSET:4</code>和<code>5</code>处的数字，比如下图中改了<code>OFFSET:4</code>处为<code>FF</code>，保存。</li>
-<li>储存卡插入3DS，打开<code>SaveDataFiler</code>，<code>SD</code>栏中找到刚更改的存档，导入游戏。</li>
-</ol>
-<p><img src="http://never.doubting.me/fancybox/image/BD2.png" alt="Maple_code"></p>
+        <p>1) 3DS中打开<code>SaveDataFiler</code>，找到<code>User</code>中的<code>0DC8</code>，导出。</p>
+<p>2) 储存卡插入电脑，找到位于<code>filer\UserSaveData</code>下找到<code>BD2COLONY0.sav</code>和<code>BD2GAME0.sav</code>，用16进制编辑器打开。</p>
+<p>3) 月球人数：<code>BD2COLONY0.sav</code>中修改<code>OFFSET:4</code>和<code>5</code>处的数字，比如下图中改了<code>OFFSET:4</code>处为<code>FF</code>，对应255人，保存。</p>
+<p><img src="http://never.doubting.me/fancybox/image/BD2_population.png" alt="Maple_code"></p>
+<p>4) 金钱: <code>BD2GAME0.sav</code>从<code>OFFSET:8568</code>开始，比如图中改成了<code>626262</code>,对应80多万，保存。</p>
+<p><img src="http://never.doubting.me/fancybox/image/BD2_gold.png" alt="Maple_code"></p>
+<p>5) 储存卡插入3DS，打开<code>SaveDataFiler</code>，<code>SD</code>栏中找到刚更改的存档，导入游戏。</p>
 
       
     </div>
