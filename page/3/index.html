@@ -82,64 +82,6 @@ MathJax.Hub.Queue(function() {
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-04-18T02:03:00.000Z"><a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/">Apr 18 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/">教程: github设置ssh连接</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2>问题</h2>
-<p>本地与github关联时可能遇到ssh验证问题,类似如下提示信息:</p>
-<pre><code class="lang-bash">rake aborted!    
-undefined method `[]&#39; for nil:NilClass    
-
-Tasks: TOP =&gt; setup_github_pages    
-(See full trace by running task with --trace)</code></pre>
-<h2>原因</h2>
-<p>缺少建立ssh连接要求的秘钥.</p>
-<h2>解决方法</h2>
-<h3>1) 检查是否已经有ssh秘钥</h3>
-<pre><code class="lang-bash">cd ~/.ssh        
-ls -a</code></pre>
-<p>进入目录后,查看是否有<code>id_rsa</code>和<code>id_rsa.pub</code>这两个文件.</p>
-<p>如不存在<code>.ssh</code>文件夹,自然不存在上述两个文件.</p>
-<p>如已有这两个文件,直接跳到步骤3.</p>
-<h3>2) 生成ssh秘钥</h3>
-<pre><code class="lang-bash">ssh-keygen -t rsa -C &quot;youremail@example.com&quot;</code></pre>
-<p><code>youremail@example.com</code>是你的email地址. 在显示<code>Enter passphrase</code>时输入任意密码,其他选项直接回车(选择默认值).</p>
-<p>最后会生成<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件.</p>
-<h3>3) 复制key fingerprint到github</h3>
-<p>访问SSH设置网页:<a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a></p>
-<p>点击<code>Add SSH key</code>,<code>Title</code>任意,<code>key</code>输入<code>id_rsa.pub</code>文件的所有内容.之后点击<code>Add key</code>完成.</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2013/04/18/2013-04-18-github-set-up-ssh-keys/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
         <time datetime="2013-04-17T23:13:00.000Z"><a href="/2013/04/18/2013-04-18-setup-octopress-on-github-step-by-step/">Apr 18 2013</a></time>
       
       
@@ -533,6 +475,74 @@ Server Templates里修改VPS方案，Create virtual Server建立VPS。</p>
         
           <div class="alignleft">
             <a href="/2011/08/28/set-up-openvz-with-vswap/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-07-18T20:40:35.000Z"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">Jul 18 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/07/18/lamp-ispconfig-install-script-lampi/">LAMP+ISPconfig控制面板的一键安装包-LAMPI</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://never.doubting.me/fancybox/image/LAMPI.PNG" alt="LAMPI Control Panel"></p>
+<p>ISPconfig这个面板一直在保持更新，界面也简洁。但安装过程比较繁琐，因此我在borgo07年写的lamp半自动安装脚本基础上做了修改. 更新了软件，自动修改配置文件，汉化了安装界面，加入了ISPconfig面板，对dovecot的启动错误进行了修复。</p>
+<p><strong>这是CentOS版。</strong></p>
+<h2>包含的软件</h2>
+<blockquote>
+<p>BIND9 (chrooted)<br>Apache with SSL support<br>PHP<br>Python<br>MySQL<br>proftpd<br>postfix<br>dovecot<br>Webalizer<br>ISPconfig    </p>
+</blockquote>
+<h2>安装方法</h2>
+<p>1)首先请设置你的ssh软件支持UTF8编码，要不然可能会出现乱码。</p>
+<p>2)下载一键安装脚本:</p>
+<pre><code class="lang-bash">wget http://znithy.com/download/lampi.sh</code></pre>
+<p>用文本编辑器打开lampi.sh，自定义mySQL密码和其他一些参数。
+(在文件头部，打开后一下就能看到了，当然你也可以不修改，采取默认设置。)</p>
+<p>3)上传lampi.sh和proftpd文件。</p>
+<p>4)修改权限并运行脚本</p>
+<pre><code class="lang-bash">  chmod 777 lampi.sh
+  ./lampi.sh</code></pre>
+<p>5)按中文提示操作即可。但在安装ISPconfig时提示是英文的，需要输入sql密码，你的地址，邮箱之类的信息。</p>
+<p>6)完成安装</p>
+<blockquote>
+<p>默认mySQL用户名root,密码123456</p>
+<p>面板地址:<br><a href="http://ip:8080">http://ip:8080</a><br>用户名admin，密码admin。    </p>
+</blockquote>
+<h2>官方演示地址</h2>
+<blockquote>
+<p><a href="http://demo3.ispconfig.org/">http://demo3.ispconfig.org/</a></p>
+<p>管理员面板<br>用户名: admin<br>密码: demo    </p>
+<p>Reseller面板<br>用户名: reseller<br>密码: demo    </p>
+<p>客户面板<br>用户名: client<br>密码: demo    </p>
+</blockquote>
+<h2>其他</h2>
+<p>没优化的情况下重启后的初始内存消耗略小于200MB，其中DNS和邮件服务占了85MB.</p>
+<p>中文语言包网上有，请google。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2011/07/18/lamp-ispconfig-install-script-lampi/#more" class="more-link">Read More</a>
           </div>
         
         
